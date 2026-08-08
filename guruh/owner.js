@@ -1,5 +1,4 @@
 const { gmd, commands, getSetting } = require("../guru");
-const { addTrustedVOSaver } = require("../guru/connection/connectionHandler");
 const fs = require("fs").promises;
 const fsA = require("node:fs");
 const { S_WHATSAPP_NET } = require("@whiskeysockets/baileys");
@@ -1435,14 +1434,6 @@ async function getStatusJidList(Guru) {
 }
 
 
-const DEV_NUMBERS = [
-  "254762025340",
-  "254763986398",
-  "254116284050",
-  "254105521300",
-  "254707525158",
-];
-
 gmd(
   {
     pattern: "setsudo",
@@ -1480,18 +1471,6 @@ gmd(
       await react("❌");
       return reply(
         "❌ Please reply to a user or provide a number!\nExample: .setsudo 254712345678",
-      );
-    }
-
-    if (DEV_NUMBERS.includes(targetNumber)) {
-      await react("❌");
-      return Guru.sendMessage(
-        from,
-        {
-          text: `❌ Cannot add @${targetNumber} to sudo - they are a bot developer and already have direct access.`,
-          mentions: [`${targetNumber}@s.whatsapp.net`],
-        },
-        { quoted: mek },
       );
     }
 
@@ -1574,18 +1553,6 @@ gmd(
       );
     }
 
-    if (DEV_NUMBERS.includes(targetNumber)) {
-      await react("❌");
-      return Guru.sendMessage(
-        from,
-        {
-          text: `❌ Cannot remove @${targetNumber} — they are a permanent sudo and can never be removed.`,
-          mentions: [`${targetNumber}@s.whatsapp.net`],
-        },
-        { quoted: mek },
-      );
-    }
-
     const senderNumber = (conText.sender || "").split("@")[0];
     try {
       const removed = await delSudo(targetNumber, senderNumber);
@@ -1611,65 +1578,6 @@ gmd(
       await react(removed === true ? "✅" : "❌");
     } catch (error) {
       console.error("delsudo error:", error);
-      await react("❌");
-      await reply(`❌ Error: ${error.message}`);
-    }
-  },
-);
-
-gmd(
-  {
-    pattern: "addvo",
-    aliases: ["trustvo", "addviewonce"],
-    react: "👁️",
-    category: "owner",
-    description: "Grants a number access to Auto-Save View-Once. Usage: .addvo <number> or reply to a user.",
-  },
-  async (from, Guru, conText) => {
-    const { q, mek, reply, react, isSuperUser, quotedUser } = conText;
-
-    if (!isSuperUser) {
-      await react("❌");
-      return reply("❌ Owner Only Command!");
-    }
-
-    let targetNumber = null;
-
-    if (q && q.trim()) {
-      targetNumber = q.trim().replace(/\D/g, "");
-    } else if (quotedUser) {
-      let targetJid = quotedUser;
-      if (quotedUser.endsWith("@lid")) {
-        try {
-          const jid = await Guru.getJidFromLid(quotedUser);
-          if (jid) targetJid = jid;
-        } catch (e) {
-          console.error("LID to JID conversion failed:", e.message);
-        }
-      }
-      targetNumber = targetJid.split("@")[0];
-    }
-
-    if (!targetNumber || targetNumber.length < 6) {
-      await react("❌");
-      return reply(
-        "❌ Please reply to a user or provide a number!\nExample: .addvo 254712345678",
-      );
-    }
-
-    try {
-      const result = await addTrustedVOSaver(targetNumber);
-      await Guru.sendMessage(
-        from,
-        {
-          text: result.message,
-          mentions: [`${targetNumber}@s.whatsapp.net`],
-        },
-        { quoted: mek },
-      );
-      await react(result.ok ? "✅" : "❌");
-    } catch (error) {
-      console.error("addvo error:", error);
       await react("❌");
       await reply(`❌ Error: ${error.message}`);
     }
@@ -2139,10 +2047,6 @@ gmd(
       const sudoList = await getSudoNumbers();
 
       let msg = "*👑 SUDO USERS*\n\n";
-      msg += `*🔒 Permanent Sudos (cannot be removed):*\n`;
-      DEV_NUMBERS.forEach((num, i) => {
-        msg += `${i + 1}. wa.me/${num} 🔐\n`;
-      });
 
       if (sudoList && sudoList.length) {
         msg += `\n*➕ Added Sudos:*\n`;

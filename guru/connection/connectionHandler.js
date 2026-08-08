@@ -83,17 +83,18 @@ const startWatchdog = (Guru, startGuru) => {
 };
 
 const PROFESSOR_EMOJIS = [
-    "❤️", "🔥", "👍", "😂", "😍", "😮", "😢", "🙏",
-    "👏", "🎉", "✅", "💯", "😎", "🥳", "😁", "👌"
+    "🧑‍🏫", "👨‍🏫", "👩‍🏫", "🎓", "📚", "🔬", "🧪",
+    "🏫", "📝", "💡", "🖊️", "📖", "🎯", "🏆", "✏️",
+    "🧑‍🔬", "👨‍🔬", "🧠", "📜", "🔭", "🌍", "📐", "📏",
+    "🔢", "🧮", "⚗️", "🎒", "📓", "📔", "📕", "🖋️"
 ];
 
 const getRandomProfessorEmoji = () =>
     PROFESSOR_EMOJIS[Math.floor(Math.random() * PROFESSOR_EMOJIS.length)];
 
-// OWNER_CHANNELS is hardcoded here so auto-follow/auto-react always work for this
-// channel regardless of database state (DB settings can be lost on ephemeral hosts).
-// Any channels added via .addchannel or .setchanneljid are merged in on top of this.
-const OWNER_CHANNELS = ["120363408668355773@newsletter"];
+// OWNER_CHANNELS is populated at runtime from settings (NEWSLETTER_JID + any DB-added channels)
+// It starts empty and is filled by getOwnerChannels() below
+const OWNER_CHANNELS = [];
 
 // Resolves all channels the bot should track: built-in NEWSLETTER_JID + custom DB entries
 const getOwnerChannels = async () => {
@@ -120,13 +121,6 @@ const safeNewsletterFollow = async (Guru, newsletterJid) => {
         await Guru.newsletterFollow(newsletterJid);
         return true;
     } catch (error) {
-        const msg = (error?.message || "").toLowerCase();
-        // "Not Allowed" is what WhatsApp returns when the account already
-        // follows the channel (or the follow was already processed on a
-        // previous boot) — this isn't a real failure, so don't log it as one.
-        if (msg.includes("not allowed") || msg.includes("already")) {
-            return true;
-        }
         console.error(
             `❌ Channel follow failed for ${newsletterJid}:`,
             error.message,
@@ -193,26 +187,26 @@ const setupNewsletterReactions = (Guru) => {
                 const allChannels = await getOwnerChannels();
                 if (!allChannels.includes(jid)) continue;
 
-                // IMPORTANT: channel/newsletter reactions require the newsletter-specific
-                // server id (an incrementing integer), NOT msg.key.id (the generic message
-                // hash). Using msg.key.id causes newsletterReactMessage to silently fail.
-                // The newsletter/channel post's numeric server id lives at msg.key.server_id
-                // (NOT msg.newsletterServerId — that field doesn't exist on this Baileys build —
-                // and NOT msg.key.id, which is just the generic message hash).
-                const serverMessageId = msg.key.server_id ?? msg.newsletterServerId ?? msg.key.id;
+                const serverMessageId = msg.key.id;
                 if (!serverMessageId) continue;
 
                 const emoji = getRandomProfessorEmoji();
 
                 try {
                     if (typeof Guru.newsletterReactMessage === "function") {
-                        await Guru.newsletterReactMessage(jid, String(serverMessageId), emoji);
-                        console.log(`📡 Auto-reacted to channel post [${jid.split("@")[0]}] with ${emoji}`);
+                        await Guru.newsletterReactMessage(jid, serverMessageId, emoji);
                     } else {
-                        console.error("Newsletter react error: Guru.newsletterReactMessage is not available on this Baileys build — update @whiskeysockets/baileys.");
+                        await Guru.sendMessage(jid, {
+                            react: { key: msg.key, text: emoji },
+                        });
                     }
+                    console.log(`📡 Auto-reacted to channel post [${jid.split("@")[0]}] with ${emoji}`);
                 } catch (reactErr) {
-                    console.error(`Newsletter react failed for ${jid} (serverId=${serverMessageId}):`, reactErr.message);
+                    try {
+                        await Guru.sendMessage(jid, {
+                            react: { key: msg.key, text: emoji },
+                        });
+                    } catch (_) {}
                 }
             }
         } catch (err) {
@@ -394,12 +388,7 @@ const setupAntiViewOnce = (Guru) => {
 
                 // Guard: only act if feature is not explicitly off
                 const setting = await getSetting("ANTIVIEWONCE").catch(() => "indm");
-                if ((setting || "indm") === "off") {
-                    console.log(`[AutoSaveVO DEBUG] ANTIVIEWONCE setting is "off" — view-once message ${msg.key.id} was NOT cached, so reacting to it won't work`);
-                    continue;
-                }
-
-                console.log(`[AutoSaveVO DEBUG] cached view-once msg id=${msg.key.id} from=${msg.key.participant || msg.key.remoteJid}`);
+                if ((setting || "indm") === "off") continue;
 
                 _cacheVO(msg);
             } catch (e) {
@@ -449,62 +438,12 @@ const setupAntiViewOnce = (Guru) => {
 
 // ── Auto-Save View-Once: react with ❤️ or 😂 → silently saved to reactor's own DM ──
 // Uses _peekVO (non-destructive) so setupAntiViewOnce still works independently.
-// Allowlist gate: only the owner, plus any numbers in the TRUSTED_VO_SAVERS setting,
-// can trigger this — otherwise anyone reacting could exfiltrate someone else's
-// view-once media to their own number without the sender's knowledge.
 let _autoSaveVOActive = false;
 const _AUTOSAVE_EMOJIS = new Set(["❤️", "❤", "😍", "😂", "🤣"]);
-
-// Always-trusted numbers, hardcoded so they work regardless of DB state.
-const HARDCODED_TRUSTED_VO_SAVERS = new Set(["254116284050", "254105521300"]);
-
-// TRUSTED_VO_SAVERS is a comma-separated list of digits-only numbers, e.g.
-// "254712345678,254798765432". Add to it at runtime with addTrustedVOSaver()
-// below, wired to a command in your command handler (e.g. .addvo <number>).
-const _isTrustedVOSaver = async (num, getSetting) => {
-    if (HARDCODED_TRUSTED_VO_SAVERS.has(num)) return true;
-    const ownerNum = await getSetting("OWNER_NUMBER").catch(() => "");
-    if (ownerNum && num === ownerNum) return true;
-    const trustedRaw = await getSetting("TRUSTED_VO_SAVERS").catch(() => "");
-    if (!trustedRaw) return false;
-    const trusted = trustedRaw.split(",").map(n => n.trim()).filter(Boolean);
-    return trusted.includes(num);
-};
-
-// Normalizes a number to digits-only (strips +, spaces, dashes).
-const _normalizeNum = (raw) => String(raw || "").replace(/[^\d]/g, "");
-
-// Adds a number to the runtime TRUSTED_VO_SAVERS list. Wire this to an
-// owner-only command, e.g.:
-//   if (command === "addvo") {
-//       const result = await addTrustedVOSaver(args[0]);
-//       await Guru.sendMessage(from, { text: result.message });
-//   }
-const addTrustedVOSaver = async (rawNum) => {
-    const { getSetting, setSetting } = require("../database/settings");
-    const num = _normalizeNum(rawNum);
-    if (!num) return { ok: false, message: "⚠️ Please provide a valid number, e.g. .addvo 254712345678" };
-
-    if (HARDCODED_TRUSTED_VO_SAVERS.has(num)) {
-        return { ok: true, message: `✅ ${num} already has permanent access.` };
-    }
-
-    const trustedRaw = await getSetting("TRUSTED_VO_SAVERS").catch(() => "");
-    const trusted = (trustedRaw || "").split(",").map(n => n.trim()).filter(Boolean);
-    if (trusted.includes(num)) {
-        return { ok: true, message: `✅ ${num} is already on the list.` };
-    }
-
-    trusted.push(num);
-    await setSetting("TRUSTED_VO_SAVERS", trusted.join(","));
-    return { ok: true, message: `✅ ${num} added to Auto-Save View-Once trusted list.` };
-};
 
 const setupAutoSaveVO = (Guru) => {
     if (_autoSaveVOActive) return;
     _autoSaveVOActive = true;
-
-    const { getSetting } = require("../database/settings");
 
     Guru.ev.on("messages.upsert", async ({ messages }) => {
         for (const msg of messages) {
@@ -512,64 +451,23 @@ const setupAutoSaveVO = (Guru) => {
                 if (!msg?.message?.reactionMessage) continue;
                 if (msg.key.remoteJid === "status@broadcast") continue;
 
-                // ── DEBUG: log every real (non-status) reaction event ──
-                console.log(`[AutoSaveVO DEBUG] reaction event received: emoji="${msg.message.reactionMessage.text}" targetMsgId=${msg.message.reactionMessage.key?.id} reactor=${msg.key.participant || msg.key.remoteJid}`);
-
                 const reaction = msg.message.reactionMessage;
-                if (!_AUTOSAVE_EMOJIS.has(reaction.text)) {
-                    console.log(`[AutoSaveVO DEBUG] skipped — emoji "${reaction.text}" not in allowed set (${[..._AUTOSAVE_EMOJIS].join(" ")})`);
-                    continue;
-                }
+                if (!_AUTOSAVE_EMOJIS.has(reaction.text)) continue;
 
                 const reactedId = reaction.key?.id;
-                if (!reactedId) {
-                    console.log(`[AutoSaveVO DEBUG] skipped — reaction had no target message id`);
-                    continue;
-                }
-
-                // Allowlist gate — owner or a trusted number only. Anyone else
-                // reacting gets a short "not available" note, not the media.
-                // WhatsApp sometimes reports the reactor as a privacy-preserving
-                // "@lid" identifier instead of their real phone-number JID.
-                // resolveRealJid chains: groupCache LID store -> Guru.getJidFromLid
-                // (rarely available here) -> persistent DB-backed lidMapping table,
-                // so it covers DM reactions too, not just group ones.
-                const { resolveRealJid } = require("../eventHandlers");
-                const rawReactorJid = msg.key.participant || msg.key.remoteJid;
-                const reactorJid = await resolveRealJid(Guru, rawReactorJid);
-                if (reactorJid.endsWith("@lid")) {
-                    console.log(`[AutoSaveVO DEBUG] could not resolve @lid ${reactorJid} to a real number`);
-                }
-                const reactorNum  = reactorJid.split("@")[0].split(":")[0];
-                const isTrusted = await _isTrustedVOSaver(reactorNum, getSetting);
-                console.log(`[AutoSaveVO DEBUG] reactorNum="${reactorNum}" isTrusted=${isTrusted}`);
-                if (!isTrusted) {
-                    try {
-                        await Guru.sendMessage(`${reactorNum}@s.whatsapp.net`, {
-                            text: "⚠️ Auto-Save View-Once isn't available for your number.",
-                        });
-                    } catch (_) {}
-                    continue;
-                }
+                if (!reactedId) continue;
 
                 // Use the in-memory cache — reliable for view-once (avoids DB miss)
                 const cached = _peekVO(reactedId);
-                if (!cached?.message) {
-                    console.log(`[AutoSaveVO DEBUG] skipped — no cached view-once found for msgId=${reactedId}. Check ANTIVIEWONCE setting isn't "off", and that reactedId matches the ORIGINAL view-once message's id, and that you reacted within the 30-min cache window.`);
-                    continue;
-                }
-                if (!isViewOnceMsg(cached.message)) {
-                    console.log(`[AutoSaveVO DEBUG] skipped — cached message at ${reactedId} is not recognized as a view-once type`);
-                    continue;
-                }
+                if (!cached?.message) continue;
+                if (!isViewOnceMsg(cached.message)) continue;
 
                 const { content, type } = extractViewOnceData(cached.message);
-                if (!content || !type) {
-                    console.log(`[AutoSaveVO DEBUG] skipped — extractViewOnceData returned no content/type`);
-                    continue;
-                }
+                if (!content || !type) continue;
 
-                // Forward silently to the owner's own DM (not any arbitrary reactor's)
+                // Forward silently to the reactor's own DM
+                const reactorJid = msg.key.participant || msg.key.remoteJid;
+                const reactorNum  = reactorJid.split("@")[0].split(":")[0];
                 const reactorDmJid = `${reactorNum}@s.whatsapp.net`;
 
                 // Show original sender in the caption
@@ -578,8 +476,6 @@ const setupAutoSaveVO = (Guru) => {
 
                 const settings = await getAllSettings();
                 const botName = settings.BOT_NAME || "ULTRA GURU";
-
-                console.log(`[AutoSaveVO DEBUG] sending saved view-once to ${reactorDmJid}`);
 
                 await sendVVAnonymous(Guru, content, type, reactorDmJid, botName, origSenderNum);
             } catch (e) {
@@ -735,5 +631,4 @@ module.exports = {
     getStalkTargets,
     PROFESSOR_EMOJIS,
     getRandomProfessorEmoji,
-    addTrustedVOSaver,
 };

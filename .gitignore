@@ -1,10 +1,25 @@
+# Dependencies
 node_modules/
-attached_assets/
-replit.md
-replit.nix
-.replit
-package-lock.json
-.cache/
+npm-debug.log*
+
+# Environment / secrets — never commit your real SESSION_ID
+.env
+.env.*
+!.env.example
+
+# WhatsApp session & runtime databases
 guru/session/
 guru/database/*.db
+guru/database/*.db-shm
+guru/database/*.db-wal
+
+# Temp/working files
+guruh/temp/
+guru/temp/
 *.log
+
+# OS/editor cruft
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
