@@ -1,1 +1,974 @@
-'use strict';const _0x1242c1=_0x2364;(function(_0x31d803,_0x57ac33){const _0x316fc3=_0x2364,_0xe9136d=_0x31d803();while(!![]){try{const _0x515c38=parseInt(_0x316fc3(0x279))/0x1+-parseInt(_0x316fc3(0x16e))/0x2+-parseInt(_0x316fc3(0x163))/0x3+-parseInt(_0x316fc3(0x189))/0x4*(parseInt(_0x316fc3(0x136))/0x5)+-parseInt(_0x316fc3(0x1d4))/0x6+parseInt(_0x316fc3(0x1cb))/0x7*(-parseInt(_0x316fc3(0x203))/0x8)+-parseInt(_0x316fc3(0x138))/0x9*(-parseInt(_0x316fc3(0x13c))/0xa);if(_0x515c38===_0x57ac33)break;else _0xe9136d['push'](_0xe9136d['shift']());}catch(_0x55348a){_0xe9136d['push'](_0xe9136d['shift']());}}}(_0x5448,0xcc9d4));const {gmd,commands}=require('../guru'),{getSetting,setSetting,resetSetting}=require('../guru/database/settings'),{getExpiryStatus}=require('../guru/expiry'),{S_WHATSAPP_NET}=require('@whiskeysockets/baileys'),fs=require('fs').promises,path=require('path'),moment=require('moment-timezone'),sleep=_0x4bd74e=>new Promise(_0x4ff59d=>setTimeout(_0x4ff59d,_0x4bd74e));function formatUptime(_0x322364){const _0x46ef83=Math['floor'](_0x322364/0x15180);_0x322364%=0x15180;const _0x4fe2a2=Math['floor'](_0x322364/0xe10);_0x322364%=0xe10;const _0x791340=Math['floor'](_0x322364/0x3c);return _0x322364%=0x3c,_0x46ef83+'d\x20'+_0x4fe2a2+'h\x20'+_0x791340+'m\x20'+_0x322364+'s';}function memProgress(_0x1b4cca,_0x53c60f,_0x2fd15b=0xa){const _0x7d3a8a=_0x2364,_0x3f57d6={'vJmSS':function(_0x3a9ad8,_0x237c6c){return _0x3a9ad8*_0x237c6c;},'hgeTc':function(_0x510991,_0x56bfb8){return _0x510991-_0x56bfb8;},'PUwIl':function(_0x23b0fa,_0x4e6df1){return _0x23b0fa/_0x4e6df1;}},_0xa64723=Math[_0x7d3a8a(0x196)](0x0,Math['min'](_0x2fd15b,Math[_0x7d3a8a(0x242)](_0x3f57d6['vJmSS'](_0x1b4cca/_0x53c60f,_0x2fd15b)))),_0x4e782b='▰'[_0x7d3a8a(0x24f)](_0xa64723)+'▱'['repeat'](_0x3f57d6['hgeTc'](_0x2fd15b,_0xa64723));return _0x4e782b+'\x20'+Math[_0x7d3a8a(0x242)](_0x3f57d6[_0x7d3a8a(0x22e)](_0x3f57d6[_0x7d3a8a(0x192)](_0x1b4cca,_0x53c60f),0x64))+'%';}function fmtMB(_0x586a84){const _0x17bd75=_0x2364,_0x41102a={'IDDkh':function(_0x25931f,_0x51ee29){return _0x25931f+_0x51ee29;},'mJGiA':function(_0x135a9a,_0x16dcc8){return _0x135a9a/_0x16dcc8;}};return _0x41102a[_0x17bd75(0x128)](_0x41102a[_0x17bd75(0x27b)](_0x41102a[_0x17bd75(0x27b)](_0x586a84,0x400),0x400)[_0x17bd75(0x1d9)](0x1),_0x17bd75(0x288));}function now(_0x4b3960,_0x502ca0){const _0x2d72f5=_0x2364,_0x23f8a5={'EwEDd':function(_0x391fff){return _0x391fff();},'SGtaO':function(_0x78d95a,_0x2e3ee6){return _0x78d95a||_0x2e3ee6;}};return _0x23f8a5['EwEDd'](moment)['tz'](_0x23f8a5[_0x2d72f5(0x285)](_0x502ca0,'Africa/Nairobi'))[_0x2d72f5(0x160)](_0x4b3960);}const CAT_ICONS={'general':'💬','owner':'🔐','group':'👥','ai':'🧠','downloader':'⬇️','tools':'⚒️','search':'🔎','games':_0x1242c1(0x1e8),'fun':'🎭','religion':'🤲','sticker':'🪄','converter':'🔀','settings':'🛠️','media':'🎬','notes':_0x1242c1(0x124),'channels':'📡','sports':'🏆','extras':'💎','texttools':'✍️','restrictions':_0x1242c1(0x23f),'ultracore':'🔥'},CAT_ORDER=[_0x1242c1(0x277),'ai',_0x1242c1(0x1c3),_0x1242c1(0x1b2),_0x1242c1(0x19e),_0x1242c1(0x1b9),_0x1242c1(0x209),_0x1242c1(0x12c),_0x1242c1(0x15d),'fun',_0x1242c1(0x22c),'religion',_0x1242c1(0x1eb),_0x1242c1(0x15f),_0x1242c1(0x1f4),'sports',_0x1242c1(0x187),_0x1242c1(0x1fd),'sticker',_0x1242c1(0x175),_0x1242c1(0x1e7)],GREETINGS=[_0x1242c1(0x18f),_0x1242c1(0x155),'Sanibona',_0x1242c1(0x21d),_0x1242c1(0x226),'Salut',_0x1242c1(0x1b1),_0x1242c1(0x147)];function timeGreeting(_0x41c28b){const _0x1cc8a0=_0x1242c1,_0x4b4b36={'DHAPN':function(_0x7b9955,_0x18f3d7){return _0x7b9955<_0x18f3d7;},'JFLdH':function(_0x5e08c6,_0x57416a){return _0x5e08c6<_0x57416a;},'YeGHI':_0x1cc8a0(0x254)};if(_0x4b4b36['DHAPN'](_0x41c28b,0xc))return _0x1cc8a0(0x26c);if(_0x4b4b36[_0x1cc8a0(0x206)](_0x41c28b,0x11))return _0x1cc8a0(0x1a7);if(_0x4b4b36[_0x1cc8a0(0x251)](_0x41c28b,0x15))return _0x1cc8a0(0x142);return _0x4b4b36['YeGHI'];}function getSortedCategories(){const _0xf47a60=_0x1242c1,_0x1491ea={'fafIq':function(_0x4c8caf,_0x242ed8){return _0x4c8caf===_0x242ed8;},'iJxOC':function(_0x534707,_0x2340a4){return _0x534707-_0x2340a4;},'pvznt':_0xf47a60(0x1a5)},_0x93768f={};for(const _0x580d8c of commands){if(!_0x580d8c[_0xf47a60(0x1ce)]||_0x580d8c[_0xf47a60(0x1d1)])continue;if(typeof _0x580d8c['pattern']!==_0x1491ea[_0xf47a60(0x275)])continue;const _0x57495c=(_0x580d8c['category']||_0xf47a60(0x277))['toLowerCase']();if(!_0x93768f[_0x57495c])_0x93768f[_0x57495c]=[];_0x93768f[_0x57495c]['push'](_0x580d8c);}return Object[_0xf47a60(0x21a)](_0x93768f)['sort']((_0x263a4f,_0x30b0e6)=>{const _0x4d50ae=_0xf47a60,_0xd88223=CAT_ORDER[_0x4d50ae(0x15b)](_0x263a4f),_0xda64e2=CAT_ORDER['indexOf'](_0x30b0e6);if(_0x1491ea['fafIq'](_0xd88223,-0x1)&&_0xda64e2===-0x1)return _0x263a4f[_0x4d50ae(0x1f9)](_0x30b0e6);if(_0x1491ea[_0x4d50ae(0x24b)](_0xd88223,-0x1))return 0x1;if(_0x1491ea['fafIq'](_0xda64e2,-0x1))return-0x1;return _0x1491ea[_0x4d50ae(0x13d)](_0xd88223,_0xda64e2);})[_0xf47a60(0x23e)](_0x5baee4=>({'cat':_0x5baee4,'cmds':_0x93768f[_0x5baee4]}));}async function buildMenuData(_0x1418bd){const _0x152cb6=_0x1242c1,_0x3ad841={'PnWQA':function(_0x1c7367,_0x4eac82){return _0x1c7367(_0x4eac82);},'zJmvk':function(_0x19a651,_0x1751c1,_0xa7d0a6,_0x35e51e){return _0x19a651(_0x1751c1,_0xa7d0a6,_0x35e51e);},'gZHlm':function(_0x3e3c04,_0xba8ef3){return _0x3e3c04(_0xba8ef3);},'qJoPh':function(_0x384f8f,_0x1c4e56){return _0x384f8f(_0x1c4e56);},'HRAqr':function(_0x523a15,_0x4bd231,_0x3e7004){return _0x523a15(_0x4bd231,_0x3e7004);},'OuAbU':_0x152cb6(0x194),'lyjit':_0x152cb6(0x1cd),'iVBiV':function(_0x54a27a,_0x49eeeb){return _0x54a27a(_0x49eeeb);},'qbUWG':function(_0x1ecc81,_0x3c275c){return _0x1ecc81<=_0x3c275c;},'OtZQW':_0x152cb6(0x14e),'XqzIN':_0x152cb6(0x120),'mMoTL':function(_0x2acac7,_0x2d4812){return _0x2acac7||_0x2d4812;},'HVwZl':_0x152cb6(0x1e5),'odaFU':_0x152cb6(0x28d)},{sender:_0xd95aee,pushName:_0x5d81fc,botName:_0x4ca222,botPrefix:_0x438c49,botVersion:_0x382392,botMode:_0x3e2fc7,botFooter:_0x204738,botCaption:_0x3a0e6e,newsletterJid:_0x26effc}=_0x1418bd,_0xe66470=formatUptime(Math[_0x152cb6(0x1f2)](process[_0x152cb6(0x268)]())),_0x525558=commands[_0x152cb6(0x166)](_0x2ac5e4=>_0x2ac5e4[_0x152cb6(0x1ce)]&&!_0x2ac5e4[_0x152cb6(0x1d1)])[_0x152cb6(0x132)],_0x5e8132=process[_0x152cb6(0x1d5)](),_0xddb7e=_0x3ad841[_0x152cb6(0x174)](memProgress,_0x5e8132['heapUsed'],_0x5e8132[_0x152cb6(0x205)],0xa),_0x10c784=_0x3ad841['gZHlm'](fmtMB,_0x5e8132[_0x152cb6(0x122)])+_0x152cb6(0x195)+_0x3ad841[_0x152cb6(0x223)](fmtMB,_0x5e8132[_0x152cb6(0x205)]),_0x3de5c7=process.env.TIME_ZONE||'Africa/Nairobi',_0x26e0ef=parseInt(now('HH',_0x3de5c7),0xa),_0xcf424f=_0x3ad841[_0x152cb6(0x249)](now,_0x3ad841[_0x152cb6(0x161)],_0x3de5c7),_0x8e389d=_0x3ad841[_0x152cb6(0x249)](now,_0x152cb6(0x276),_0x3de5c7),_0xc5b339=now(_0x3ad841[_0x152cb6(0x1ef)],_0x3de5c7),_0x3eb3b1=GREETINGS[Math[_0x152cb6(0x1f2)](Math['random']()*GREETINGS[_0x152cb6(0x132)])],_0x2fba29=_0x3ad841['iVBiV'](timeGreeting,_0x26e0ef),_0x800b9d=await getExpiryStatus(),_0x457408=_0x800b9d[_0x152cb6(0x241)],_0x1366bd=_0x800b9d[_0x152cb6(0x25e)]!==null?_0x3ad841[_0x152cb6(0x269)](_0x800b9d[_0x152cb6(0x25e)],0x0)?_0x3ad841['OtZQW']:_0x800b9d[_0x152cb6(0x25e)]+_0x152cb6(0x1c6):_0x3ad841[_0x152cb6(0x1f5)],_0x11fbed=getSortedCategories(),_0x472af0=_0x11fbed['map'](({cat:_0x34d1a2,cmds:_0x35788f},_0x5e4175)=>{const _0x43c487=_0x152cb6,_0x50fa71=CAT_ICONS[_0x34d1a2]||'🔥',_0x152f02=_0x35788f[_0x43c487(0x132)],_0x4ed6ee=(_0x34d1a2[0x0][_0x43c487(0x1ed)]()+_0x34d1a2['slice'](0x1))[_0x43c487(0x1ed)](),_0x413727=_0x3ad841[_0x43c487(0x264)](String,_0x5e4175+0x1)[_0x43c487(0x225)](0x2,'0');return'>\x20'+_0x413727+'\x20\x20'+_0x50fa71+'\x20\x20'+_0x4ed6ee+_0x43c487(0x1ba)+_0x152f02+')_';})[_0x152cb6(0x290)]('\x0a');return{'sender':_0xd95aee,'pushName':_0x3ad841['mMoTL'](_0x5d81fc,_0x152cb6(0x15e)),'botName':_0x4ca222||_0x3ad841[_0x152cb6(0x20b)],'botPrefix':_0x438c49||'.','botVersion':_0x3ad841[_0x152cb6(0x28f)](_0x382392,_0x152cb6(0x11b)),'botMode':_0x3ad841[_0x152cb6(0x28f)](_0x3e2fc7,_0x3ad841['odaFU']),'botFooter':_0x204738||'Powered\x20by\x20GURUTECH','botCaption':_0x3ad841['mMoTL'](_0x3a0e6e,''),'newsletterJid':_0x26effc,'uptime':_0xe66470,'totalCmds':_0x525558,'catLines':_0x472af0,'expiryLine':_0x457408,'expiryDetail':_0x1366bd,'memBar':_0xddb7e,'memDetail':_0x10c784,'dateStr':_0xcf424f,'timeStr':_0x8e389d,'timeStr24':_0xc5b339,'greeting':_0x3eb3b1,'timeGreet':_0x2fba29,'numCats':_0x11fbed[_0x152cb6(0x132)]};}const THEMES={'ultra':{'name':'🔷\x20ULTRA','description':_0x1242c1(0x1db),'render'({botName:_0x5402dc,botPrefix:_0x43ef75,botVersion:_0x2d1a0c,botMode:_0x425ce9,botFooter:_0xf338d5,uptime:_0x455f77,totalCmds:_0xdfb3c8,catLines:_0x7a8481,expiryLine:_0x2ce919,numCats:_0x20b632,pushName:_0x33cba2,memBar:_0x33af5b,dateStr:_0x26aca2,timeStr:_0x167903,timeGreet:_0x45aa78}){const _0x378516=_0x1242c1,_0x1bb7f5=_0x7a8481['split']('\x0a')[_0x378516(0x23e)](_0x1d2877=>_0x1d2877['replace'](/^> ?/,'>\x20│\x20'))['join']('\x0a');return _0x378516(0x11c)+_0x5402dc[_0x378516(0x1ed)]()+'*\x20\x20·\x20\x20_v'+_0x2d1a0c+_0x378516(0x18e)+_0x33cba2+_0x378516(0x1bb)+_0x45aa78+'*\x0a>\x20│\x20📅\x20*'+_0x26aca2+_0x378516(0x1e0)+_0x167903+_0x378516(0x219)+_0xdfb3c8+_0x378516(0x12d)+_0x455f77+'*\x0a>\x20│\x20🔑\x20\x20Prefix\x20\x20\x20\x20›\x20\x20*'+_0x43ef75+_0x378516(0x21e)+_0x425ce9[_0x378516(0x1ed)]()+_0x378516(0x19a)+_0x33af5b+'*\x0a>\x20│\x20🔒\x20\x20Licence\x20\x20\x20›\x20\x20*'+_0x2ce919+'*\x0a>\x20│\x0a>\x20│\x20📋\x20*CATEGORIES*\x20\x20·\x20\x20_reply\x201–'+_0x20b632+'_\x0a>\x20│\x0a'+_0x1bb7f5+_0x378516(0x156)+_0xf338d5+'_';}},'panther':{'name':_0x1242c1(0x17a),'description':'Wakanda-inspired\x20bold\x20blockquote\x20style','render'({botName:_0xb42fc4,botPrefix:_0x7302f6,botVersion:_0x1d2b29,botMode:_0x359dc3,botFooter:_0x1be8f5,uptime:_0x55521f,totalCmds:_0x1e2071,catLines:_0x1d1695,expiryLine:_0x27d288,numCats:_0x2c21b3,pushName:_0x1e4454,memBar:_0x3ef81e,dateStr:_0x2a74bc,timeStr24:_0x275291,timeGreet:_0x2800d5}){const _0x53421f=_0x1242c1;return'>\x20🐾\x20*'+_0xb42fc4[_0x53421f(0x1ed)]()+_0x53421f(0x247)+_0x2800d5+',\x20*'+_0x1e4454+_0x53421f(0x1d7)+_0x2a74bc+_0x53421f(0x245)+_0x275291+_0x53421f(0x11d)+_0x1e2071+'*\x0a>\x20⏱️\x20\x20Uptime\x20\x20\x20\x20›\x20\x20*'+_0x55521f+_0x53421f(0x217)+_0x7302f6+_0x53421f(0x12a)+_0x359dc3[_0x53421f(0x1ed)]()+_0x53421f(0x1a0)+_0x1d2b29+'*\x0a>\x20💾\x20\x20RAM\x20\x20\x20\x20\x20\x20\x20›\x20\x20'+_0x3ef81e+_0x53421f(0x261)+_0x27d288+_0x53421f(0x1ae)+_0x2c21b3+_0x53421f(0x267)+_0x1d1695+'\x0a>\x20━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x0a>\x20🐾\x20_'+_0x1be8f5+'_';}},'neon':{'name':_0x1242c1(0x193),'description':_0x1242c1(0x20c),'render'({botName:_0x8e927f,botPrefix:_0x435103,botVersion:_0x39ea15,botMode:_0x167da3,botFooter:_0x11602d,uptime:_0x23b15f,totalCmds:_0x4f0a85,catLines:_0x5ed91f,expiryLine:_0x41d57a,memBar:_0x4b01dd,pushName:_0x3d08aa,numCats:_0x3c0252}){const _0x318ea0=_0x1242c1;return _0x318ea0(0x284)+_0x8e927f[_0x318ea0(0x1ed)]()+_0x318ea0(0x228)+_0x3d08aa+'*\x0a>\x20━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x0a>\x20💬\x20CMDS\x20\x20\x20\x20⟩\x20\x20*'+_0x4f0a85+_0x318ea0(0x164)+_0x23b15f+_0x318ea0(0x13a)+_0x435103+_0x318ea0(0x260)+_0x167da3[_0x318ea0(0x1ed)]()+_0x318ea0(0x199)+_0x39ea15+_0x318ea0(0x131)+_0x4b01dd+_0x318ea0(0x137)+_0x41d57a+_0x318ea0(0x18b)+_0x3c0252+_0x318ea0(0x1ad)+_0x5ed91f+'\x0a>\x20▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓\x0a>\x20⚡\x20_'+_0x11602d+'_';}},'minimal':{'name':_0x1242c1(0x25c),'description':_0x1242c1(0x16f),'render'({botName:_0x1ee884,botPrefix:_0x5469f8,botVersion:_0x2308bc,botMode:_0x1e5773,botFooter:_0xda3e8f,uptime:_0x977da6,totalCmds:_0x51d87d,catLines:_0x1ae873,expiryLine:_0x15ae8,pushName:_0x3e938c,numCats:_0x2a62a2}){const _0x441f27=_0x1242c1;return _0x441f27(0x1f8)+_0x1ee884[_0x441f27(0x1ed)]()+_0x441f27(0x17d)+_0x3e938c+_0x441f27(0x274)+_0x51d87d+'*\x0a>\x20⏱️\x20\x20Uptime\x20\x20\x20\x20·\x20\x20*'+_0x977da6+_0x441f27(0x181)+_0x5469f8+'*\x0a>\x20🛠️\x20\x20Mode\x20\x20\x20\x20\x20\x20·\x20\x20*'+_0x1e5773[_0x441f27(0x1ed)]()+_0x441f27(0x1e1)+_0x2308bc+'*\x0a>\x20🔒\x20\x20Licence\x20\x20\x20·\x20\x20'+_0x15ae8+'\x0a>\x20──────────────────────────────\x0a>\x20📋\x20*Categories*\x20\x20·\x20\x20_reply\x201–'+_0x2a62a2+_0x441f27(0x27f)+_0x1ae873+'\x0a>\x20──────────────────────────────\x0a>\x20_'+_0xda3e8f+'_';}},'royal':{'name':_0x1242c1(0x1b7),'description':_0x1242c1(0x27d),'render'({botName:_0x5591ea,botPrefix:_0x1c0351,botVersion:_0x3a6198,botMode:_0x433da4,botFooter:_0x431e51,uptime:_0xd488dd,totalCmds:_0x126208,catLines:_0x218343,expiryLine:_0x4aeb3d,expiryDetail:_0xaf9188,pushName:_0x523813,numCats:_0x152e96}){const _0x2c4757=_0x1242c1;return _0x2c4757(0x1b6)+_0x5591ea[_0x2c4757(0x1ed)]()+_0x2c4757(0x27e)+_0x523813+_0x2c4757(0x263)+_0x126208+_0x2c4757(0x14d)+_0xd488dd+'*\x0a>\x20🔑\x20\x20Prefix\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20›\x20\x20*'+_0x1c0351+'*\x0a>\x20🛠️\x20\x20Mode\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20›\x20\x20*'+_0x433da4[_0x2c4757(0x1ed)]()+'*\x0a>\x20📦\x20\x20Version\x20\x20\x20\x20\x20\x20\x20\x20\x20›\x20\x20*v'+_0x3a6198+_0x2c4757(0x1f3)+_0x4aeb3d+_0x2c4757(0x135)+_0xaf9188+'_\x0a>\x20✦\x20━━━━━━━━━━━━━━━━━━━━━━━\x20✦\x0a>\x20👑\x20*COMMAND\x20CATEGORIES*\x0a>\x20_Reply\x20a\x20number\x20to\x20explore\x20\x20·\x20\x201–'+_0x152e96+_0x2c4757(0x130)+_0x218343+_0x2c4757(0x280)+_0x431e51+'_';}},'galaxy':{'name':_0x1242c1(0x23b),'description':'Space\x20&\x20stars\x20blockquote\x20style','render'({botName:_0x4066e8,botPrefix:_0x509d6a,botVersion:_0x5b35b0,botMode:_0x12d2b4,botFooter:_0x950a20,uptime:_0x22caf2,totalCmds:_0x30e7c4,catLines:_0x7b3cd,expiryLine:_0x57977a,pushName:_0x4ea2e0,memBar:_0x5b6334,numCats:_0x2d13ef}){const _0x4435fb=_0x1242c1;return _0x4435fb(0x143)+_0x4066e8[_0x4435fb(0x1ed)]()+_0x4435fb(0x1ca)+_0x4ea2e0+_0x4435fb(0x11e)+_0x30e7c4+'*\x0a>\x20⏳\x20\x20Uptime\x20\x20\x20\x20··\x20\x20*'+_0x22caf2+'*\x0a>\x20🔭\x20\x20Prefix\x20\x20\x20\x20··\x20\x20*'+_0x509d6a+_0x4435fb(0x14c)+_0x12d2b4[_0x4435fb(0x1ed)]()+_0x4435fb(0x287)+_0x5b35b0+_0x4435fb(0x144)+_0x5b6334+_0x4435fb(0x207)+_0x57977a+_0x4435fb(0x1bd)+_0x2d13ef+'_\x0a>\x20✨\x20━━━━━━━━━━━━━━━━━━━━━━━\x20✨\x0a'+_0x7b3cd+_0x4435fb(0x188)+_0x950a20+'_';}},'dark':{'name':_0x1242c1(0x24d),'description':_0x1242c1(0x28e),'render'({botName:_0x556689,botPrefix:_0x4a1c02,botVersion:_0x2501ea,botMode:_0x2f7d68,botFooter:_0x14212c,uptime:_0x1fb058,totalCmds:_0x5008b0,catLines:_0x3bac65,expiryLine:_0x2f2274,pushName:_0x426bb6,memBar:_0x33c790,numCats:_0x483ab0}){const _0x2f5b38=_0x1242c1;return _0x2f5b38(0x1d0)+_0x556689[_0x2f5b38(0x1ed)]()+'*\x20🖤\x0a>\x20◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢\x0a>\x20☠️\x20\x20*'+_0x426bb6+_0x2f5b38(0x266)+_0x5008b0+_0x2f5b38(0x253)+_0x1fb058+'*\x0a>\x20🔑\x20\x20Prefix\x20\x20\x20\x20›\x20\x20*'+_0x4a1c02+'*\x0a>\x20🛠️\x20\x20Mode\x20\x20\x20\x20\x20\x20›\x20\x20*'+_0x2f7d68[_0x2f5b38(0x1ed)]()+_0x2f5b38(0x1a0)+_0x2501ea+_0x2f5b38(0x231)+_0x33c790+_0x2f5b38(0x261)+_0x2f2274+_0x2f5b38(0x1e3)+_0x483ab0+_0x2f5b38(0x123)+_0x3bac65+'\x0a>\x20◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢\x0a>\x20🖤\x20_'+_0x14212c+'_';}},'flower':{'name':_0x1242c1(0x221),'description':_0x1242c1(0x218),'render'({botName:_0x42375c,botPrefix:_0x23512e,botVersion:_0x12f24a,botMode:_0x48f459,botFooter:_0x3f7ccc,uptime:_0x1f22a2,totalCmds:_0x427db8,catLines:_0xcb43e7,expiryLine:_0x41df3f,pushName:_0x1fa733,numCats:_0x5051ff}){const _0x1b6842=_0x1242c1;return _0x1b6842(0x134)+_0x42375c[_0x1b6842(0x1ed)]()+'*\x20🌸\x0a>\x20🌺\x20━━━━━━━━━━━━━━━━━━━━━━━\x20🌺\x0a>\x20🌷\x20Hi\x20*'+_0x1fa733+_0x1b6842(0x159)+_0x427db8+_0x1b6842(0x14a)+_0x1f22a2+'*\x0a>\x20🌻\x20\x20Prefix\x20\x20\x20»\x20\x20*'+_0x23512e+_0x1b6842(0x1f0)+_0x48f459[_0x1b6842(0x1ed)]()+_0x1b6842(0x1c0)+_0x12f24a+_0x1b6842(0x208)+_0x41df3f+_0x1b6842(0x158)+_0x5051ff+_0x1b6842(0x230)+_0xcb43e7+_0x1b6842(0x256)+_0x3f7ccc+'_';}},'fire':{'name':_0x1242c1(0x1e4),'description':'Blazing\x20hot\x20blockquote\x20style','render'({botName:_0x4fcbac,botPrefix:_0x5421a2,botVersion:_0x3ad67e,botMode:_0x6f1d51,botFooter:_0x28a5ce,uptime:_0x4b26d9,totalCmds:_0x22000b,catLines:_0x88bf93,expiryLine:_0x1212e0,pushName:_0x159192,numCats:_0x58c87f}){const _0x2785c0=_0x1242c1;return _0x2785c0(0x243)+_0x4fcbac[_0x2785c0(0x1ed)]()+_0x2785c0(0x1b4)+_0x159192+_0x2785c0(0x252)+_0x22000b+_0x2785c0(0x286)+_0x4b26d9+_0x2785c0(0x236)+_0x5421a2+'*\x0a>\x20🔥\x20\x20Mode\x20\x20\x20\x20\x20⟩\x20\x20*'+_0x6f1d51['toUpperCase']()+_0x2785c0(0x18d)+_0x3ad67e+_0x2785c0(0x26a)+_0x1212e0+_0x2785c0(0x19d)+_0x58c87f+'_\x0a>\x20🌋\x20━━━━━━━━━━━━━━━━━━━━━━━\x20🌋\x0a'+_0x88bf93+_0x2785c0(0x212)+_0x28a5ce+'_';}},'wave':{'name':_0x1242c1(0x150),'description':_0x1242c1(0x1c2),'render'({botName:_0x18c435,botPrefix:_0x440241,botVersion:_0x40e7c5,botMode:_0x6ed964,botFooter:_0x414c64,uptime:_0x3ee24c,totalCmds:_0x368a79,catLines:_0x63ddf1,expiryLine:_0x3a4bb5,pushName:_0x154850,numCats:_0x551794}){const _0x5d87b3=_0x1242c1;return'>\x20🌊\x20*'+_0x18c435[_0x5d87b3(0x1ed)]()+_0x5d87b3(0x148)+_0x154850+_0x5d87b3(0x1b0)+_0x368a79+_0x5d87b3(0x211)+_0x3ee24c+_0x5d87b3(0x293)+_0x440241+_0x5d87b3(0x19f)+_0x6ed964[_0x5d87b3(0x1ed)]()+_0x5d87b3(0x1b8)+_0x40e7c5+_0x5d87b3(0x1f6)+_0x3a4bb5+'\x0a>\x20〰️\x20━━━━━━━━━━━━━━━━━━━━━━━\x20〰️\x0a>\x20🌊\x20*COMMAND\x20CATEGORIES*\x0a>\x20↯\x20_Reply\x20a\x20number\x20\x20·\x20\x201–'+_0x551794+_0x5d87b3(0x240)+_0x63ddf1+'\x0a>\x20〰️\x20━━━━━━━━━━━━━━━━━━━━━━━\x20〰️\x0a>\x20🌊\x20_'+_0x414c64+'_';}},'matrix':{'name':'💻\x20MATRIX','description':_0x1242c1(0x213),'render'({botName:_0xbb4814,botPrefix:_0x6098b6,botVersion:_0x2e667f,botMode:_0x37cd4c,botFooter:_0x5ae84d,uptime:_0x5e2e53,totalCmds:_0x285dd0,catLines:_0x26bed2,expiryLine:_0x281da9,sender:_0x5529fa,memBar:_0x16b8a9,numCats:_0xff9d20}){const _0x2fb5f0=_0x1242c1;return _0x2fb5f0(0x272)+_0xbb4814['toUpperCase']()+'*\x0a>\x20══════════════════════════════\x0a>\x20⌨️\x20\x20INIT_USER\x20\x20::\x20\x20'+_0x5529fa[_0x2fb5f0(0x289)]('@')[0x0]+'\x0a>\x20✅\x20\x20SYS_BOOT\x20\x20\x20::\x20\x20COMPLETE\x0a>\x20══════════════════════════════\x0a>\x20💬\x20\x20CMDS\x20\x20\x20\x20\x20\x20\x20::\x20\x20*'+_0x285dd0+_0x2fb5f0(0x185)+_0x5e2e53+_0x2fb5f0(0x12f)+_0x6098b6+_0x2fb5f0(0x1cf)+_0x37cd4c[_0x2fb5f0(0x1ed)]()+'*\x0a>\x20📦\x20\x20VERSION\x20\x20\x20\x20::\x20\x20*v'+_0x2e667f+_0x2fb5f0(0x11a)+_0x16b8a9+'\x0a>\x20🔒\x20\x20LICENCE\x20\x20\x20\x20::\x20\x20'+_0x281da9+'\x0a>\x20══════════════════════════════\x0a>\x20🔎\x20SELECT_MODULE\x20\x20::\x20\x20_reply\x201–'+_0xff9d20+'_\x0a>\x20══════════════════════════════\x0a'+_0x26bed2+_0x2fb5f0(0x20a)+_0x5ae84d+'_';}}},THEME_KEYS=Object[_0x1242c1(0x21a)](THEMES);async function getMenuPicUrl(_0x259b0c,_0x21b0e4){const _0x61b17=_0x1242c1,_0x3fcb92={'KsYre':_0x61b17(0x271),'DLBqC':_0x61b17(0x21b)},_0x50fec0=await getSetting(_0x3fcb92[_0x61b17(0x1b3)]);if(_0x50fec0)return _0x50fec0;const _0x197edb=[_0x21b0e4,_0x259b0c[_0x61b17(0x11f)]?.['id']][_0x61b17(0x166)](Boolean),_0x3d0cb0=new Set();for(const _0x11415c of _0x197edb){if(_0x3d0cb0[_0x61b17(0x186)](_0x11415c))continue;_0x3d0cb0[_0x61b17(0x235)](_0x11415c);try{const _0xb461a3=await _0x259b0c[_0x61b17(0x25d)](_0x11415c,_0x3fcb92[_0x61b17(0x25f)]);if(_0xb461a3)return _0xb461a3;}catch(_0x3f1faf){console['warn'](_0x61b17(0x1fa)+_0x11415c+_0x61b17(0x1a8)+_0x3f1faf[_0x61b17(0x13e)]);}}return console[_0x61b17(0x1a1)](_0x61b17(0x265)),null;}async function sendMenuMsg(_0x2c8ecf,_0x458c5c,_0x36226f,_0x57159e){const _0x54b059=_0x1242c1,_0x8fad2a={'vcIXt':function(_0x277370,_0x3663ab){return _0x277370||_0x3663ab;},'OcYbY':_0x54b059(0x1ff)},{mek:_0x3aec05,botName:_0x481eeb,newsletterJid:_0x4894c1,sender:_0xd0b28e,botId:_0x917e4}=_0x57159e,_0x379c57=await getMenuPicUrl(_0x2c8ecf,_0x917e4);try{const _0x8459e3={'caption':_0x36226f[_0x54b059(0x1f7)](),'contextInfo':{'mentionedJid':[_0xd0b28e],'forwardingScore':0x5,'isForwarded':!![],'forwardedNewsletterMessageInfo':{'newsletterJid':_0x8fad2a[_0x54b059(0x152)](_0x4894c1,_0x8fad2a[_0x54b059(0x282)]),'newsletterName':_0x481eeb||_0x54b059(0x1e5),'serverMessageId':0x0}}};if(_0x379c57)await _0x2c8ecf[_0x54b059(0x24c)](_0x458c5c,{'image':{'url':_0x379c57},..._0x8459e3},{'quoted':_0x3aec05});else{const {caption:_0x223a1a,..._0x260e25}=_0x8459e3;await _0x2c8ecf[_0x54b059(0x24c)](_0x458c5c,{'text':_0x223a1a,..._0x260e25},{'quoted':_0x3aec05});}}catch{await _0x2c8ecf[_0x54b059(0x24c)](_0x458c5c,{'text':_0x36226f[_0x54b059(0x1f7)]()},{'quoted':_0x3aec05});}}gmd({'pattern':_0x1242c1(0x151),'aliases':[_0x1242c1(0x292),_0x1242c1(0x19b),'themenu'],'react':'🎨','category':_0x1242c1(0x12c),'description':_0x1242c1(0x262)},async(_0x50fbde,_0x2a12b9,_0x5150d4)=>{const _0x169e19=_0x1242c1,_0x153cd6={'JyhEq':function(_0x257f8c,_0x34c1a6){return _0x257f8c===_0x34c1a6;},'GLyzt':'\x20✅\x20*[ACTIVE]*','jVTrt':function(_0x52f47d,_0x4e10c4){return _0x52f47d(_0x4e10c4);},'XMpzo':_0x169e19(0x1f1),'WyXGb':'MENU_THEME','jgwAC':function(_0x1621df,_0x315827,_0x5beb7d){return _0x1621df(_0x315827,_0x5beb7d);},'sYjrz':function(_0x405fb0,_0x3e81c3,_0x5485b9){return _0x405fb0(_0x3e81c3,_0x5485b9);},'ZRsif':function(_0x5a1bed,_0x4bbd0e,_0x43a7c1,_0x4447b4,_0x2125e3){return _0x5a1bed(_0x4bbd0e,_0x43a7c1,_0x4447b4,_0x2125e3);}},{reply:_0x3bc801,react:_0xf5d963,isSuperUser:_0x39e332,args:_0x1fadcd,botFooter:_0x3cfa37}=_0x5150d4;if(!_0x39e332)return await _0xf5d963('❌'),_0x153cd6[_0x169e19(0x258)](_0x3bc801,_0x153cd6[_0x169e19(0x1c9)]);const _0x2af72a=await getSetting(_0x153cd6[_0x169e19(0x183)])||'ultra';if(!_0x1fadcd[0x0]){const _0x2fe232=THEME_KEYS['map']((_0x45b466,_0x2a282f)=>{const _0x4d3b20=_0x169e19,_0x6c3f78=THEMES[_0x45b466],_0x293024=_0x153cd6[_0x4d3b20(0x191)](_0x45b466,_0x2af72a)?_0x153cd6['GLyzt']:'';return'*'+(_0x2a282f+0x1)+_0x4d3b20(0x16c)+_0x6c3f78['name']+_0x293024+'\x0a\x20\x20\x20_'+_0x6c3f78['description']+'_';})['join']('\x0a\x0a');return _0x153cd6[_0x169e19(0x258)](_0x3bc801,_0x169e19(0x169)+THEME_KEYS[_0x169e19(0x132)]+_0x169e19(0x214)+(THEMES[_0x2af72a]?.[_0x169e19(0x12b)]||_0x2af72a)+'*\x0a┃\x0a┃\x20\x20*.setmenu\x20<number>*\x20—\x20switch\x0a┃\x20\x20*.previewmenu\x20<n>*\x20\x20—\x20preview\x0a┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\x0a\x0a'+_0x2fe232+_0x169e19(0x1a9)+_0x3cfa37+'_');}const _0x19a01c=_0x153cd6[_0x169e19(0x168)](parseInt,_0x1fadcd[0x0],0xa);if(isNaN(_0x19a01c)||_0x19a01c<0x1||_0x19a01c>THEME_KEYS[_0x169e19(0x132)])return await _0x153cd6[_0x169e19(0x258)](_0xf5d963,'❌'),_0x3bc801('❌\x20Enter\x20a\x20number\x20between\x201\x20and\x20'+THEME_KEYS[_0x169e19(0x132)]+_0x169e19(0x178));const _0x5e660a=THEME_KEYS[_0x19a01c-0x1];await _0x153cd6[_0x169e19(0x1bc)](setSetting,_0x153cd6[_0x169e19(0x183)],_0x5e660a),await _0x153cd6['jVTrt'](_0xf5d963,'⏳');const _0x5bf6e2=await _0x153cd6[_0x169e19(0x258)](buildMenuData,_0x5150d4),_0x1a8125=_0x169e19(0x1a2)+THEMES[_0x5e660a]['name']+_0x169e19(0x1a6)+THEMES[_0x5e660a]['render'](_0x5bf6e2);await _0x153cd6[_0x169e19(0x139)](sendMenuMsg,_0x2a12b9,_0x50fbde,_0x1a8125,_0x5150d4),await _0xf5d963('✅');}),gmd({'pattern':_0x1242c1(0x26f),'aliases':[_0x1242c1(0x204),_0x1242c1(0x13f)],'react':_0x1242c1(0x232),'category':_0x1242c1(0x12c),'description':_0x1242c1(0x184)},async(_0x31a469,_0x3e040a,_0x1bcf5f)=>{const _0xd82d2d=_0x1242c1,_0x251d5f={'KwjyE':function(_0x2e2774,_0x418028){return _0x2e2774(_0x418028);},'NRSfS':_0xd82d2d(0x1f1),'ZiWHL':function(_0x456718,_0x1e1a74){return _0x456718>_0x1e1a74;},'BvHvv':function(_0x193aa2,_0x5c1651){return _0x193aa2(_0x5c1651);},'xPNOk':function(_0x27a984,_0x224a87){return _0x27a984(_0x224a87);},'CBFYU':function(_0xc0b30d,_0x334f22,_0x4cd297,_0x5e4902,_0x1b503a){return _0xc0b30d(_0x334f22,_0x4cd297,_0x5e4902,_0x1b503a);},'ZwOfY':function(_0x53caa5,_0x5f0358){return _0x53caa5(_0x5f0358);}},{reply:_0x430eb5,react:_0x5b7975,isSuperUser:_0x3b629f,args:_0x4c72d9}=_0x1bcf5f;if(!_0x3b629f)return await _0x251d5f['KwjyE'](_0x5b7975,'❌'),_0x251d5f[_0xd82d2d(0x165)](_0x430eb5,_0x251d5f[_0xd82d2d(0x1dd)]);const _0x45a70f=parseInt(_0x4c72d9[0x0],0xa);if(_0x251d5f[_0xd82d2d(0x165)](isNaN,_0x45a70f)||_0x45a70f<0x1||_0x251d5f['ZiWHL'](_0x45a70f,THEME_KEYS['length']))return await _0x251d5f['BvHvv'](_0x5b7975,'❌'),_0x251d5f[_0xd82d2d(0x26d)](_0x430eb5,_0xd82d2d(0x171)+THEME_KEYS[_0xd82d2d(0x132)]+_0xd82d2d(0x18c));const _0x11f268=THEME_KEYS[_0x45a70f-0x1],_0x3dcb86=await _0x251d5f[_0xd82d2d(0x26d)](buildMenuData,_0x1bcf5f),_0x687365=_0xd82d2d(0x1bf)+THEMES[_0x11f268][_0xd82d2d(0x12b)]+_0xd82d2d(0x22b)+_0x45a70f+_0xd82d2d(0x210)+THEMES[_0x11f268][_0xd82d2d(0x20d)](_0x3dcb86);await _0x251d5f[_0xd82d2d(0x215)](sendMenuMsg,_0x3e040a,_0x31a469,_0x687365,_0x1bcf5f),await _0x251d5f['ZwOfY'](_0x5b7975,'✅');}),gmd({'pattern':'setbotpic','aliases':[_0x1242c1(0x145),_0x1242c1(0x25a),'botimage'],'react':_0x1242c1(0x1c4),'category':_0x1242c1(0x12c),'description':'Change\x20the\x20bot\x20WhatsApp\x20profile\x20picture.\x20Quote\x20an\x20image\x20or\x20send\x20a\x20URL.'},async(_0x1175bf,_0x4600b7,_0x422223)=>{const _0x14807d=_0x1242c1,_0x5a780a={'FoZEM':function(_0x330d49,_0x261db5){return _0x330d49(_0x261db5);},'GPuLy':function(_0x1de240,_0x3f133b){return _0x1de240(_0x3f133b);},'kqCrx':_0x14807d(0x1a3),'aZYjJ':function(_0x5b8131,_0x2f4eef){return _0x5b8131(_0x2f4eef);},'vmXec':function(_0x5a0f8c,_0x103520){return _0x5a0f8c+_0x103520;},'ERtBy':function(_0x43cf03,_0x596c80){return _0x43cf03+_0x596c80;},'sbozG':'•\x20Quote\x20an\x20image\x20→\x20send\x20*.setbotpic*\x0a','evbts':_0x14807d(0x23c),'swSpe':_0x14807d(0x162),'YUqBZ':_0x14807d(0x259),'XLMhU':_0x14807d(0x248),'TQjiJ':_0x14807d(0x21b),'veYsK':function(_0x5b495d,_0x3d0ed3,_0x1325ab){return _0x5b495d(_0x3d0ed3,_0x1325ab);},'ftOit':'BOT_PIC'},{reply:_0x4aeb6e,react:_0x399f94,isSuperUser:_0x45dc32,quoted:_0xd15691,quotedMsg:_0x18d3ab,q:_0x362c9d}=_0x422223;if(!_0x45dc32)return await _0x5a780a['FoZEM'](_0x399f94,'❌'),_0x5a780a['GPuLy'](_0x4aeb6e,_0x14807d(0x1f1));const _0x290488=_0x18d3ab?.['imageMessage']||_0xd15691?.[_0x14807d(0x1fb)]||_0xd15691?.[_0x14807d(0x13e)]?.[_0x14807d(0x1fb)]||null,_0x125bc9=_0x362c9d&&_0x362c9d[_0x14807d(0x1f7)]()[_0x14807d(0x246)](_0x5a780a[_0x14807d(0x1e2)]);if(!_0x290488&&!_0x125bc9)return await _0x5a780a['aZYjJ'](_0x399f94,'❌'),_0x5a780a['aZYjJ'](_0x4aeb6e,_0x5a780a['vmXec'](_0x5a780a[_0x14807d(0x15a)](_0x14807d(0x20e),_0x14807d(0x119)),_0x5a780a[_0x14807d(0x17b)])+_0x5a780a[_0x14807d(0x1d6)]);await _0x399f94('⏳');let _0x27dbbf=null;try{const {Jimp:_0x1962ea}=require('jimp');let _0x5c163f;if(_0x290488){_0x27dbbf=await _0x4600b7[_0x14807d(0x1ab)](_0x290488,'temp_botpic');const _0x183566=await _0x1962ea['read'](_0x27dbbf);_0x183566[_0x14807d(0x19c)]({'w':0x2d0,'h':0x2d0}),_0x5c163f=await _0x183566[_0x14807d(0x153)](_0x14807d(0x28a));}else{const _0x496b05=await _0x1962ea['read'](_0x362c9d[_0x14807d(0x1f7)]());_0x496b05[_0x14807d(0x19c)]({'w':0x2d0,'h':0x2d0}),_0x5c163f=await _0x496b05['getBuffer'](_0x14807d(0x28a));}await _0x4600b7[_0x14807d(0x270)]({'tag':'iq','attrs':{'to':S_WHATSAPP_NET,'type':_0x5a780a[_0x14807d(0x167)],'xmlns':_0x5a780a[_0x14807d(0x173)]},'content':[{'tag':_0x5a780a[_0x14807d(0x22d)],'attrs':{'type':_0x5a780a[_0x14807d(0x1c1)]},'content':_0x5c163f}]});if(_0x125bc9)await _0x5a780a[_0x14807d(0x149)](setSetting,_0x5a780a[_0x14807d(0x1ee)],_0x362c9d[_0x14807d(0x1f7)]());await _0x5a780a[_0x14807d(0x197)](_0x399f94,'✅'),await _0x5a780a['FoZEM'](_0x4aeb6e,'✅\x20Bot\x20profile\x20picture\x20updated!\x0aThe\x20menu\x20image\x20has\x20also\x20been\x20updated.');}catch(_0x31f3cc){await _0x399f94('❌'),await _0x5a780a['GPuLy'](_0x4aeb6e,_0x14807d(0x1df)+_0x31f3cc[_0x14807d(0x13e)]);}finally{if(_0x27dbbf)await fs[_0x14807d(0x154)](_0x27dbbf)['catch'](()=>{});}}),gmd({'pattern':'setmenupic','aliases':[_0x1242c1(0x176),'menuimage','setmenuimg'],'react':'🖼️','category':_0x1242c1(0x12c),'description':_0x1242c1(0x25b)},async(_0x5cd99a,_0x5bd0b4,_0x423920)=>{const _0x466044=_0x1242c1,_0x82b4b5={'BCehg':function(_0x175226,_0x4a6c31){return _0x175226(_0x4a6c31);},'aHHTS':_0x466044(0x1a3),'cwdiZ':function(_0x21312f,_0x4919a0){return _0x21312f&&_0x4919a0;},'rQzAh':function(_0x4795a9,_0x483bc1){return _0x4795a9+_0x483bc1;},'yVcXW':'•\x20*.setmenupic\x20https://example.com/banner.jpg*','RoJyp':function(_0x3f2218,_0x5723ce){return _0x3f2218(_0x5723ce);},'xzRTT':function(_0x2383f,_0x3634a6,_0x2ffe22){return _0x2383f(_0x3634a6,_0x2ffe22);},'sNKNi':_0x466044(0x271),'WKtfA':function(_0x349d9b,_0x2429fc){return _0x349d9b(_0x2429fc);}},{reply:_0x46856f,react:_0x231be6,isSuperUser:_0x5df001,quoted:_0x199271,quotedMsg:_0x235d1d,q:_0x54d8f8}=_0x423920;if(!_0x5df001)return await _0x82b4b5['BCehg'](_0x231be6,'❌'),_0x82b4b5[_0x466044(0x291)](_0x46856f,_0x466044(0x1f1));const _0x4f13ba=_0x235d1d?.['imageMessage']||_0x199271?.[_0x466044(0x1fb)]||_0x199271?.['message']?.['imageMessage']||null,_0x356405=_0x54d8f8&&_0x54d8f8[_0x466044(0x1f7)]()['startsWith'](_0x82b4b5[_0x466044(0x1af)]);if(_0x82b4b5[_0x466044(0x28b)](!_0x4f13ba,!_0x356405))return await _0x231be6('❌'),_0x46856f(_0x82b4b5[_0x466044(0x21f)](_0x466044(0x20e)+_0x466044(0x119),_0x466044(0x1ec))+_0x82b4b5[_0x466044(0x1ea)]);await _0x231be6('⏳');let _0x2fda95=null;try{let _0x19ae90;if(_0x356405)_0x19ae90=_0x54d8f8['trim']();else{const {uploadToCatbox:_0x5bab60}=require('../guru');_0x2fda95=await _0x5bd0b4['downloadAndSaveMediaMessage'](_0x4f13ba,_0x466044(0x1b5)),_0x19ae90=await _0x82b4b5[_0x466044(0x233)](_0x5bab60,_0x2fda95);if(!_0x19ae90)throw new Error(_0x466044(0x244));}await _0x82b4b5[_0x466044(0x24e)](setSetting,_0x82b4b5[_0x466044(0x1fc)],_0x19ae90),await _0x82b4b5[_0x466044(0x1ac)](_0x231be6,'✅'),await _0x46856f(_0x466044(0x146)+_0x19ae90+'\x0a\x0aSend\x20*.menu*\x20to\x20see\x20the\x20result.');}catch(_0x5b894b){await _0x231be6('❌'),await _0x46856f(_0x466044(0x26b)+_0x5b894b[_0x466044(0x13e)]);}finally{if(_0x2fda95)await fs[_0x466044(0x154)](_0x2fda95)[_0x466044(0x23a)](()=>{});}}),gmd({'pattern':_0x1242c1(0x20f),'aliases':['footer','botfooter',_0x1242c1(0x198)],'react':'✏️','category':_0x1242c1(0x12c),'description':_0x1242c1(0x23d)},async(_0x406f13,_0x59ba29,_0x8aabae)=>{const _0x58c063=_0x1242c1,_0x26b2d6={'AIkTF':function(_0x4bb964,_0x37df5c){return _0x4bb964(_0x37df5c);},'oMabr':function(_0x5bf1b0,_0x429141,_0xbd9094){return _0x5bf1b0(_0x429141,_0xbd9094);}},{reply:_0x3742e1,react:_0x4ef703,isSuperUser:_0x5b837c,q:_0x358e4c}=_0x8aabae;if(!_0x5b837c)return await _0x26b2d6[_0x58c063(0x224)](_0x4ef703,'❌'),_0x3742e1(_0x58c063(0x1f1));if(!_0x358e4c||!_0x358e4c[_0x58c063(0x1f7)]()){await _0x4ef703('❌');const _0x426709=await _0x26b2d6['AIkTF'](getSetting,_0x58c063(0x172))||_0x58c063(0x133);return _0x26b2d6[_0x58c063(0x224)](_0x3742e1,_0x58c063(0x16a)+_0x426709+'_\x0a\x0aExample:\x20*.setfooter\x20Powered\x20by\x20ULTRA-GURU\x20🔥*');}return await _0x26b2d6['oMabr'](setSetting,_0x58c063(0x172),_0x358e4c[_0x58c063(0x1f7)]()),await _0x4ef703('✅'),_0x3742e1(_0x58c063(0x227)+_0x358e4c[_0x58c063(0x1f7)]()+'_');}),gmd({'pattern':_0x1242c1(0x202),'aliases':[_0x1242c1(0x14b),'botcaption',_0x1242c1(0x220)],'react':'✏️','category':_0x1242c1(0x12c),'description':_0x1242c1(0x141)},async(_0x187d2e,_0x49cf35,_0x3ca014)=>{const _0x165540=_0x1242c1,_0x40848d={'Rbqav':function(_0x79005c,_0x3defaf){return _0x79005c(_0x3defaf);},'VpPTx':_0x165540(0x18a),'uUbqI':function(_0x2ab860,_0x8463e4){return _0x2ab860(_0x8463e4);},'lKcKn':function(_0x1fbd4e,_0x3fdccb){return _0x1fbd4e(_0x3fdccb);}},{reply:_0xa38a72,react:_0x409685,isSuperUser:_0x2c79c8,q:_0x5dc36d}=_0x3ca014;if(!_0x2c79c8)return await _0x40848d[_0x165540(0x27c)](_0x409685,'❌'),_0xa38a72(_0x165540(0x1f1));if(!_0x5dc36d||!_0x5dc36d['trim']()){await _0x409685('❌');const _0x131923=await _0x40848d['Rbqav'](getSetting,_0x40848d[_0x165540(0x182)])||_0x165540(0x133);return _0xa38a72(_0x165540(0x273)+_0x131923+'_\x0a\x0aExample:\x20*.setcaption\x20⚡\x20ULTRA\x20GURU\x20|\x20Ultra\x20Fast*');}return await setSetting(_0x40848d[_0x165540(0x182)],_0x5dc36d[_0x165540(0x1f7)]()),await _0x40848d[_0x165540(0x1e9)](_0x409685,'✅'),_0x40848d[_0x165540(0x1de)](_0xa38a72,'✅\x20Caption\x20updated\x20to:\x0a\x0a_'+_0x5dc36d[_0x165540(0x1f7)]()+'_');}),gmd({'pattern':'setbotname','aliases':[_0x1242c1(0x17f),'namebot',_0x1242c1(0x1d2),'renamebot'],'react':'✏️','category':_0x1242c1(0x12c),'description':_0x1242c1(0x125)},async(_0xf3ef03,_0x165572,_0x3c0d5e)=>{const _0x7e3684=_0x1242c1,_0x325806={'KUNUs':_0x7e3684(0x1f1),'xWcvd':function(_0x55b635,_0x34ab41){return _0x55b635(_0x34ab41);},'SnOjg':function(_0x404648,_0x400e44){return _0x404648(_0x400e44);},'MKwOn':function(_0x5a45dc,_0x15a1e0,_0x4fb57b){return _0x5a45dc(_0x15a1e0,_0x4fb57b);},'VQcNx':function(_0x5860af,_0x3ea05c){return _0x5860af(_0x3ea05c);}},{reply:_0x14623e,react:_0xc95b9f,isSuperUser:_0x576720,q:_0x43b9f1}=_0x3c0d5e;if(!_0x576720)return await _0xc95b9f('❌'),_0x14623e(_0x325806[_0x7e3684(0x17c)]);if(!_0x43b9f1||!_0x43b9f1[_0x7e3684(0x1f7)]()){await _0x325806[_0x7e3684(0x15c)](_0xc95b9f,'❌');const _0x22ac6d=await _0x325806[_0x7e3684(0x1be)](getSetting,_0x7e3684(0x16d))||_0x7e3684(0x1e5);return _0x14623e(_0x7e3684(0x27a)+_0x22ac6d+_0x7e3684(0x283));}await _0x325806[_0x7e3684(0x190)](setSetting,_0x7e3684(0x16d),_0x43b9f1['trim']());try{await _0x165572['updateProfileName'](_0x43b9f1['trim']());}catch{}return await _0x325806[_0x7e3684(0x1c8)](_0xc95b9f,'✅'),_0x14623e(_0x7e3684(0x177)+_0x43b9f1[_0x7e3684(0x1f7)]()+_0x7e3684(0x278));}),gmd({'pattern':_0x1242c1(0x180),'aliases':[_0x1242c1(0x28c),_0x1242c1(0x121),_0x1242c1(0x238),_0x1242c1(0x12e)],'react':'🔒','category':_0x1242c1(0x12c),'description':'Set\x20the\x20bot\x20licence\x20expiry\x20date.\x20Usage:\x20.setexpiry\x20YYYY-MM-DD'},async(_0xedae15,_0x247b65,_0x1851c1)=>{const _0x20102b=_0x1242c1,_0x5a4d38={'qpFhE':function(_0x4ca271,_0x412d36){return _0x4ca271(_0x412d36);},'oWZoe':_0x20102b(0x1f1),'jZiQv':function(_0x71e100){return _0x71e100();},'ILuOz':_0x20102b(0x1da),'tomQv':function(_0x4cd9a2,_0x1fb73f){return _0x4cd9a2(_0x1fb73f);},'UgYvb':function(_0x3a9c14,_0x4390b3){return _0x3a9c14(_0x4390b3);}},{reply:_0x54212b,react:_0x107763,isSuperUser:_0x2ca551,args:_0x247b14}=_0x1851c1;if(!_0x2ca551)return await _0x5a4d38[_0x20102b(0x22f)](_0x107763,'❌'),_0x5a4d38[_0x20102b(0x22f)](_0x54212b,_0x5a4d38['oWZoe']);const {expiryLine:_0x2355ec,parseExpiryDate:_0x482fa7}=require('../guru/expiry');if(!_0x247b14[0x0]){await _0x107763('ℹ️');const _0x53d299=await _0x5a4d38['jZiQv'](_0x2355ec);return _0x54212b('┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\x0a┃\x20\x20🔒\x20\x20*LICENCE\x20EXPIRY*\x0a┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━┃\x0a┃\x20\x20Current:\x20'+_0x53d299+_0x20102b(0x22a));}const _0x3be070=_0x247b14[0x0][_0x20102b(0x1f7)](),_0xac35f8=_0x5a4d38['qpFhE'](_0x482fa7,_0x3be070);if(!_0xac35f8)return await _0x5a4d38['qpFhE'](_0x107763,'❌'),_0x54212b('❌\x20Invalid\x20date\x20format!\x0a\x0aAccepted:\x20YYYY-MM-DD,\x20DD/MM/YYYY,\x20DD-MM-YYYY\x0a\x0aExample:\x20*.setexpiry\x202026-12-31*');await setSetting(_0x5a4d38[_0x20102b(0x1fe)],_0x3be070);const _0x43b201=await _0x2355ec();return await _0x5a4d38[_0x20102b(0x257)](_0x107763,'✅'),_0x5a4d38[_0x20102b(0x26e)](_0x54212b,'✅\x20*Expiry\x20date\x20set!*\x0a\x0a🔒\x20'+_0x43b201+'\x0a\x0a_Note:\x20Set\x20EXPIRY_DATE\x20in\x20Heroku\x20config\x20vars\x20for\x20persistence\x20across\x20restarts._');}),gmd({'pattern':'designinfo','aliases':[_0x1242c1(0x16b),_0x1242c1(0x127),'currentdesign'],'react':'🎨','category':'owner','description':_0x1242c1(0x281)},async(_0x23666f,_0x126b67,_0x44d59c)=>{const _0x49146a=_0x1242c1,_0x51824b={'BLvne':function(_0x49c1c3,_0x9b9d19){return _0x49c1c3(_0x9b9d19);},'KVrqU':_0x49146a(0x234),'yHJkD':function(_0x446854,_0x535f47){return _0x446854(_0x535f47);},'BFIaF':_0x49146a(0x1a4),'edqit':function(_0x72106b,_0x1abe60){return _0x72106b(_0x1abe60);},'BrhEs':_0x49146a(0x18a),'xdQYe':_0x49146a(0x16d),'vCTls':function(_0x3ccda4,_0x23b19a){return _0x3ccda4||_0x23b19a;},'PLVOC':function(_0x5aa676,_0x1054e0){return _0x5aa676||_0x1054e0;},'YXvVf':_0x49146a(0x133),'luqkB':function(_0x562eba,_0x458ec7){return _0x562eba+_0x458ec7;}},{reply:_0x2e8078,react:_0x112fdf,isSuperUser:_0x1d7e72}=_0x44d59c;if(!_0x1d7e72)return await _0x51824b['BLvne'](_0x112fdf,'❌'),_0x2e8078(_0x49146a(0x1f1));const [_0x4afedd,_0x1e477c,_0x610c09,_0x1e734a,_0x451cb3]=await Promise[_0x49146a(0x1d3)]([getSetting(_0x51824b[_0x49146a(0x1c7)]),_0x51824b[_0x49146a(0x129)](getSetting,_0x51824b[_0x49146a(0x255)]),_0x51824b['edqit'](getSetting,_0x49146a(0x172)),_0x51824b['edqit'](getSetting,_0x51824b['BrhEs']),getSetting(_0x51824b[_0x49146a(0x1e6)])]),{expiryLine:_0x4b3ede}=require('../guru/expiry'),_0x4c8071=await _0x4b3ede(),_0xe92ac7=_0x51824b['vCTls'](_0x4afedd,_0x49146a(0x179)),_0x2b5821=THEMES[_0xe92ac7]?.['name']||_0xe92ac7,_0x5276c2=THEME_KEYS['indexOf'](_0xe92ac7)+0x1,_0x81bc2=_0x51824b[_0x49146a(0x157)](_0x1e477c,_0x51824b['YXvVf'])[_0x49146a(0x132)]>0x2d?_0x51824b[_0x49146a(0x24a)]((_0x1e477c||'')[_0x49146a(0x216)](0x0,0x2a),'...'):_0x1e477c||_0x51824b[_0x49146a(0x200)];return await _0x112fdf('✅'),_0x51824b[_0x49146a(0x129)](_0x2e8078,'┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\x0a┃\x20\x20🎨\x20\x20*BOT\x20DESIGN\x20SETTINGS*\x0a┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━┃\x0a┃\x20\x20Menu\x20Theme\x20:\x20'+_0x2b5821+'\x20('+_0x5276c2+'/'+THEME_KEYS[_0x49146a(0x132)]+')\x0a┃\x20\x20Bot\x20Name\x20\x20\x20:\x20'+(_0x451cb3||'ULTRA\x20GURU')+'\x0a┃\x20\x20Footer\x20\x20\x20\x20\x20:\x20_'+(_0x610c09||_0x51824b['YXvVf'])+_0x49146a(0x14f)+_0x51824b[_0x49146a(0x140)](_0x1e734a,_0x51824b[_0x49146a(0x200)])+_0x49146a(0x237)+_0x81bc2+_0x49146a(0x1d8)+_0x4c8071+'\x0a┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\x0a\x0a*Commands:*\x0a◈\x20*.setmenu*\x20—\x20browse\x20&\x20switch\x20themes\x0a◈\x20*.previewmenu\x20<n>*\x20—\x20preview\x20a\x20theme\x0a◈\x20*.setbotname\x20<text>*\x20—\x20change\x20bot\x20name\x0a◈\x20*.setbotpic*\x20—\x20change\x20profile\x20+\x20menu\x20image\x0a◈\x20*.setmenupic*\x20—\x20change\x20menu\x20image\x20only\x0a◈\x20*.setfooter\x20<text>*\x20—\x20change\x20footer\x0a◈\x20*.setcaption\x20<text>*\x20—\x20change\x20caption\x0a◈\x20*.setexpiry\x20YYYY-MM-DD*\x20—\x20set\x20expiry\x20date\x0a◈\x20*.resetdesign*\x20—\x20reset\x20all\x20to\x20defaults');});const _resetConfirm=new Map();function _0x2364(_0x1bef96,_0x50fd9a){_0x1bef96=_0x1bef96-0x118;const _0x5448b3=_0x5448();let _0x2364bf=_0x5448b3[_0x1bef96];if(_0x2364['yXgntS']===undefined){var _0x45fb8a=function(_0x51b222){const _0x562760='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';let _0x4c854f='',_0x1ebc8f='';for(let _0x3da7db=0x0,_0x15a19d,_0x477d13,_0x12bb93=0x0;_0x477d13=_0x51b222['charAt'](_0x12bb93++);~_0x477d13&&(_0x15a19d=_0x3da7db%0x4?_0x15a19d*0x40+_0x477d13:_0x477d13,_0x3da7db++%0x4)?_0x4c854f+=String['fromCharCode'](0xff&_0x15a19d>>(-0x2*_0x3da7db&0x6)):0x0){_0x477d13=_0x562760['indexOf'](_0x477d13);}for(let _0x45ee8d=0x0,_0xe6fbf9=_0x4c854f['length'];_0x45ee8d<_0xe6fbf9;_0x45ee8d++){_0x1ebc8f+='%'+('00'+_0x4c854f['charCodeAt'](_0x45ee8d)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x1ebc8f);};_0x2364['RoznQo']=_0x45fb8a,_0x2364['EfkrnY']={},_0x2364['yXgntS']=!![];}const _0x2d3131=_0x5448b3[0x0],_0x4d1605=_0x1bef96+_0x2d3131,_0x23a219=_0x2364['EfkrnY'][_0x4d1605];return!_0x23a219?(_0x2364bf=_0x2364['RoznQo'](_0x2364bf),_0x2364['EfkrnY'][_0x4d1605]=_0x2364bf):_0x2364bf=_0x23a219,_0x2364bf;}gmd({'pattern':_0x1242c1(0x1c5),'aliases':[_0x1242c1(0x222),'resettheme'],'react':'🔄','category':'owner','description':_0x1242c1(0x118)},async(_0x557ea5,_0x5d71e9,_0xaf38a)=>{const _0x55c8e9=_0x1242c1,_0x4d5422={'ixMfk':function(_0x57e7ab,_0x22022e){return _0x57e7ab(_0x22022e);},'ZkAyJ':_0x55c8e9(0x1cc),'rfwGg':_0x55c8e9(0x234),'sPQox':function(_0x34c140,_0x5eb9cb){return _0x34c140(_0x5eb9cb);},'wAFXd':'✅\x20All\x20design\x20settings\x20reset\x20to\x20defaults!\x0a\x0aSend\x20*.menu*\x20to\x20see\x20the\x20result.'},{reply:_0x3e6837,react:_0xeaedbd,isSuperUser:_0x902c1b}=_0xaf38a;if(!_0x902c1b)return await _0xeaedbd('❌'),_0x4d5422[_0x55c8e9(0x201)](_0x3e6837,_0x55c8e9(0x1f1));const _0x480a6a=Date[_0x55c8e9(0x17e)](),_0x122aa5=_resetConfirm[_0x55c8e9(0x13b)](_0x557ea5);if(!_0x122aa5||_0x480a6a-_0x122aa5>0x61a8)return _resetConfirm[_0x55c8e9(0x162)](_0x557ea5,_0x480a6a),await _0xeaedbd('⚠️'),_0x3e6837(_0x4d5422[_0x55c8e9(0x1aa)]+_0x55c8e9(0x239)+_0x55c8e9(0x126));return _resetConfirm['delete'](_0x557ea5),await Promise[_0x55c8e9(0x1d3)]([resetSetting(_0x4d5422[_0x55c8e9(0x170)]),_0x4d5422[_0x55c8e9(0x21c)](resetSetting,'BOT_PIC'),resetSetting(_0x55c8e9(0x172)),resetSetting(_0x55c8e9(0x18a)),_0x4d5422[_0x55c8e9(0x201)](resetSetting,_0x55c8e9(0x16d))]),await _0xeaedbd('✅'),_0x3e6837(_0x4d5422[_0x55c8e9(0x229)]);});function _0x5448(){const _0x335fee=['yM90BMfTzq','C2v0zxHWAxj5','kGO+ipcFLjeGifbYzwzPEcaGicdcTYaGkG','vNbqvhG','v3Lyr2i','uhjLDMLLDYbHig1LBNuGDgHLBwuGD2L0Ag91DcbZD2L0y2HPBMCUifvZywDLoIaUChjLDMLLD21LBNuGpdeTmte+','kGO+iokpSE+4JYaGifvqveLnrsaGicaGoJOGicO','AgfZ','zxH0CMfZ','cJ4G4PYOiokuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGsdINkGkpIdWN4Yzif8','odrrC2jOwwi','q0fqveLptG','cJ4G4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAtcJ4G4PQHicPdqvrfr09ssuvtkIaGWRCGif9YzxbSEsaX4Oct','pGPtzw5KicOUC2v0BwvUDsOGDg8GC2vLihrOzsbSAxn0lG','kGO+ipcFLkuGifzLCNnPB24GiokFQsaGkNy','xYdIJiSkpIdILiiG8j+rPcbizxKGkG','sgfIyxjP','tuT3t24','sNLOrxe','ufv3swW','4PQHie5ft04','reqGtu1nifLzwvK','ic8G','Bwf4','rM9Aru0','y2HHBMDLzM9VDgvY','kGO+ipcFK6yGifzfuIaGicaG4P+PicaQDG','kGO+iokuGIdWN5k+icbsqu0GicaGicaG4Oc6icaQ','BwvUDwrLC2LNBG','C2nHBgvuB0zPDa','cJ4G8j+mIYdILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILieG8j+mIWO+ipcFLkuGkKnptu1btKqGq0furuDpuKLfuYOkpIdWN4Y277Ipif9szxbSEsbHig51BwjLCIb0BYbPz25PDguGimk3icaX4Oct','C2vHCMnO','kGO+ipcFKkaGie1VzguGicaGicdIGlOGicO','kGO+ipcFK6yGifzLCNnPB24GicdIGlOGicP2','D2fYBG','4PYficPuAgvTzsbZD2L0y2HLzcb0BYa','Ahr0Ca','qK9ux1bjqW','C3rYAw5N','isOkcKHLCMuNCYbHihbYzxzPzxC6cGO','4PIa77IpieDVB2qGqwz0zxjUB29U','ksbMywLSzwq6ia','cGO+if8','wMTbEuO','zg93BMXVywrbBMrtyxzLtwvKAwfnzxnZywDL','v0T0zKe','xWO+iokwK+kwK+kwK+kwK+kwK+kwK+kwK+kwK+kwK+kwK+kwK+kwK+kwK+kwK+kwK+kwK+kwK+kwK+kwK+kwK+kwK+kwK+kwK+kwK+kwK+kwK+kwKWO','cJ4G4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4PsbcJ4G8j+qVIaQq09ntuforcbdqvrfr09ssuvtkGO+if9uyxaGysbUDw1IzxiGimk3icaX4Oct','yuHivfm','kGO+iooaSo+4JYdILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILieG44cW77IpcJ4G8j+qOcaGq29TBwfUzhmGiokaUIaGkG','sg9Syq','Dg9VBhm','s3nzCMu','kIdWN5sLcJ4G8j+mIYdILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILieG8j+mIWO+ipcFKQuGkG','DgvTCf9Tzw51CgLJ','pIdWN5gricO','8j+rKsbst1Lbta','kGO+ipcFKkaGifzLCNnPB24GicdIGlOGicP2','z2fTzxm','icbFka','kIaG4OcuicaQ','C1LQCNO','cJ4G4PYOiokuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGsdINkGkpIdWN4YmicPxqvjqifrpieeGq0furuDpuLKQcJ4Gx1jLCgX5ihDPDgGGysbUDw1IzxiGimk3icaX4Oct','u25pAMC','8j+rGE+4JYaQuhjLDMLLDYdIGjqG','kGO+ipcFJlSGifzLCNnPB24Gimk7icaQDG','vffQAuO','q2fSBsbVy2vHBIbIBg9JA3f1B3rLihn0EwXL','zg93BMXVywrLCG','8j+wVo+4JW','CMvZzxrKzxnPz24','zcbYzw1HAw5PBMC','s1zYCvu','vLfJtNG','we1WEM8','kIaG8j+AGaO+iokCQcdILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILieG4PYOcJ4G8j+mNYbhCMvLDgLUz3mSicO','n3zMDNfcvW','4PQG77IpicPszxnLDcbdB25MAxjTyxrPB24QcGO','AgG6Bw06C3mGqq','Cgf0DgvYBG','kGO+ipcFM6dVUi8Gie1preuGicaGicaGoJOGicO','pIdWN5AKicO','zg9UDefKzenVBw1HBMrmAxn0','y2HHBMDLBMfTzq','ywXS','mtyZmdq0sMXUsfLL','BwvTB3j5vxnHz2u','zxzIDhm','kGO+ipcFK4uG','cUkuG+kuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGWRILimGipcFLjiG','Dg9gAxHLza','qK9ux0vyueLswv9eqvrf','rMfKzwqGyMXVy2TXDw90zsaRignVCM5LCI1ICMfJA2v0igjVEcbZDhLSzq','whDzEvG','tLjtzLm','BeTJs24','4P2miezHAwXLzcb0BYb1CgrHDguGCgLJDhvYztOG','kIaGWRCGipcFLzaGkG','kGO+ipcFK6yGifzLCNnPB24GicdcTYaGkNy','A3fdCNG','cJ4G4PEK4PEI4PEK4PEI4PEK4PEI4PEK4PEI4PEK4PEI4PEK4PEI4PEK4PEI4PEK4PEI4PEK4PEI4PEK4PEI4PEK4PEIcJ4G8j+vT++4JYaQq09ntuforcbdqvrfr09ssuvtkGO+if9dAg9VC2uGEw91CIbWyxrOicdcTYaGmEkaKW','8j+uPsbgsvjf','vuXuuKeGr1vsvq','Egrrwwu','DwX0CMfJB3jL','8j+vUE+4JW','DvvICuK','EvzJwfC','Dgv4DhrVB2XZ','4OcIiff1B3rLigfUigLTywDLiokgKIbZzw5KicOUC2v0BwvUDxbPyYOk','Dg9vChbLCKnHC2u','zNrpAxq','BhLQAxq','kGO+ipcFJlSGie1VzguGicaGimk7icaQ','4P2mie93BMvYie9UBhKGq29TBwfUzce','zMXVB3i','kGO+ipcFLjiGieXPy2vUy2uGicaGicaGicdIGlOGia','y2HHBM5LBhm','whf6su4','kGO+ipcFKkaGieXPy2vUy2uGicdIGlOGia','DhjPBq','pIdWN6Q2icO','Bg9JywXLq29TCgfYzq','w21LBNuTCgLJxsbWCM9MAwXLugLJDhvYzvvYBcG','Aw1Hz2vnzxnZywDL','C05ltMK','CMvZDhjPy3rPB25Z','suX1t3O','mtiWmZyZnda2nJq5oda0nteWqg5LD3nSzxr0zxi','wvH2vMy','AxHnzMS','C2v0y2fWDgLVBG','mte0mtu0otzeuNfTueG','BwvUDxbYzxzPzxC','AgvHCfrVDgfS','reHbue4','cJ4G8j+uKIaGtgLJzw5JzsaGimk3WRCGia','kGO+ipcFJlSGieXPy2vUy2uGimk7ica','z3jVDxa','cJ4G4Pwq4Pwq4Pwq4Pwq4Pwq4Pwq4Pwq4Pwq4Pwq4Pwq4Pwq4Pwq4Pwq4Pwq4Pwq4Pwq4Pwq4Pwq4Pwq4Pwq4Pwq4Pwq4Pwq4Pwq4Pwq4Pwq4Pwq4Pwq4Pwq4PwqcJ4G8j+sUYbF','sfz3wMW','q3LIzxjWDw5RigvSzwn0CMLJigjSB2nRCxvVDguGC3r5Bgu','CMvUzgvY','4P2mifbSzwfZzsbXDw90zsbHBIbPBwfNzsaQB3iQihbYB3zPzguGysbvuKWHcGO','C2v0zM9VDgvY','ihrVigfWCgX5lILFcGO','kGO+ipcFKkaGifvWDgLTzsaGicdIGlOGicO','cJ4G8j+mIYdILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILieG8j+mIWO+ipcFLkuGxW','sgfJA2vYihrLCM1PBMfSigjSB2nRCxvVDguGC3r5Bgu','kIb0AgvTzxmGyxzHAwXHyMXLcUkuGYaGq3vYCMvUDdOGkG','q0jgwvu','C2XPy2u','kGO+ipcFLjeGifbYzwzPEcaGicdIGlOGicO','q3v0zsbMBg9YywWGyMXVy2TXDw90zsbZDhLSzq','kGO+iokuGGO+iokuGIdWN5kSienVBw1HBMrZicdIGlOGicO','A2v5CW','Aw1Hz2u','C1brB3G','rhvTzwXH','kGO+iokuGIdWN5UG77IpicbnB2rLicaGicaG4Oc6icaQ','CLf6qwG','y2HHBMDLy2fWDgLVBG','8j+mUcbgte9xrvi','zgvZAwDUCMvZzxq','CuPVugG','quLRvey','CgfKu3rHCNq','sgvSBg8','4PYfiezVB3rLCIb1CgrHDgvKihrVoGOkxW','kIaG4PQHcJ4G4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAt4PAtcJ4G8j+KLIbizxKGkG','D0fgwgq','cUkuGWRILimGicPvC2fNztOQic5ZzxrLEhbPCNKGwvLzws1nts1eraRILimGicPfEgfTCgXLoIOGlNnLDgv4CgLYEsaYmdi2lteYltmXcUkuGWRILimGifnLDcbfwfbjuLLFrefursbPBIbizxjVA3uk4PsdicbJB25MAwCGDMfYCYbMB3iGCgvYC2LZDgvUy2uUcUkuL+kuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuMW','kGPFke5VDcbHChbSAwvKlIbtzw5Kic5ZzxrTzw51ia','y29UDMvYDgvY','weXnAfu','DKPTu1m','CxbgAeu','xWO+ipcFJlOG4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4PsbipcFJlOk','kGO+ipcFKR4GifjbtsaGicaGicdIGlOGia','8j+rGE+4JW','uM9kExa','tuvovv9usevnrq','ywrK','kGO+ipcFLkuGifbYzwzPEcaGiokFQsaGkG','xWRILimGie1LBNuGugLJicaGoIa','BgLJzw5Jzq','vgHPCYb3AwXSihjLC2v0oGRIL4GGtwvUDsb0AgvTzsdIHPiGDwX0CMek4PEiiejVDcbUyw1LiokgKIbKzwzHDwX0cUkxIcbgB290zxiSignHChrPB24SihbPyYdIHPiGzgvMyxvSDhmkcG','y2f0y2G','8j+mJcbhquXbwfK','4OcIicOUC2v0yM90CgLJigH0DhbZoI8VzxHHBxbSzs5JB20VCgHVDg8UANbNkG','q2HHBMDLihrOzsbIB3qGzM9VDgvYihnOB3DUigLUig1LBNvZlIbvC2fNztOGlNnLDgzVB3rLCIa8Dgv4Dd4','BwfW','8j+BOE+4JW','xWO+iooaSo+4JYdILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILieG44cW77IpcG','BgLUzq','CM91BMq','pIdWN5sLicO','vxbSB2fKihrVignHDgjVEcbMywLSzwqG4OcuihrYEsbHifvstcbPBNn0zwfKlG','icdcTYaG8j+vKca','C3rHCNrZv2L0Aa','kGO+iokAOsbxquTbtKrbiezpuKvwrviG8j+mJqO+iokuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGqO+ipcFJj8G','CgLJDhvYzq','sfjbCxi','BhvXA0i','zMfMsxe','C2vUze1LC3nHz2u','8j+wPcbeqvjl','EhPsvfq','CMvWzwf0','zxHWB3j0CW','sKzmzeG','kIWGEw91j3jLig9UigzPCMuHcJ4G8j+mIYdILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILieG8j+mIWO+ipcFLkuGienTzhmGicaGiokFQsaGkG','kGO+iokpSE+4JYaGifvWDgLTzsaGicdIGlOGicO','8j+mMsbhB29Kie5Pz2H0','qKzjyuy','cJ4G8j+mUIdILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILieG8j+mUGO+ipcFJlGGxW','Dg9Tuxy','ALzuCNq','DZPWCM9MAwXLoNbPy3r1CMu','y2HHBMDLyM90CgLJ','u2v0ihrOzsbPBwfNzsbZAg93BIbPBIaUBwvUDs4GvxnHz2u6ic5ZzxrTzw51CgLJidXvuKW+ig9Yihf1B3rLigfUigLTywDLlG','8j+QTIbnsu5jtufm','ChjVzMLSzvbPy3r1CMvvCMW','zgf5C0XLzNq','reXcCum','kGO+ipcFM6dVUi8Gie1preuGicaG4P+PicaQ','cJ4G8j+uKIaGtgLJzw5JzsaGiokaUIaG','q2HHBMDLihrOzsbIB3qGBwvUDsbKzxnPz24UifvZywDLoIaUC2v0BwvUDsbBms0Xmv0GB3iGlNnLDg1LBNuGDg8GBgLZDa','kGO+iokCPIdILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILieG4PYMcJ4G8j+sRcbuB3rHBcbdB21Tyw5KCYaG4Oc6icaQ','ug5xuue','w21LBNuTCgLJxsboBYbIB3qGChjVzMLSzsbWAwn0DxjLigf2ywLSywjSzsdIGjqGC2v0ig9Uzsb3AxrOic5ZzxrTzw51CgLJlcbVCIbTywTLihn1CMuGDgHLigjVDcDZifDOyxrZqxbWigfJy291BNqGAgfZigeGChjVzMLSzsbWAg90BYbZzxqU','kIbLBNrLCMvKihrOzsbZAgfKB3DZcJ4G4PEK4PEI4PEK4PEI4PEK4PEI4PEK4PEI4PEK4PEI4PEK4PEI4PEK4PEI4PEK4PEI4PEK4PEI4PEK4PEI4PEK4PEIcJ4G8j+sRcaGq29TBwfUzhmGiokaUIaGkG','xWO+iokuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGqO','Dxb0Aw1L','Cwjvv0C','kGO+ipcFLkuGieXPy2vUy2uGiokFQsaG','4P2miezHAwXLzdOG','8j+mHsbhB29Kie1VCM5PBMC','Efbot2S','vwDzDMi','ChjLDMLLD21LBNu','CxvLCNK','tuvovv9qsunFq1vtve9n','pIdWN5k7icO','4P2mifbYB3zPzguGysbJyxb0Aw9UiqOkq3vYCMvUDdOGxW','kGO+ipcFKQWGq29TBwfUzhmGimk3icaQ','Chz6BNq','AgG6Bw0Gqq','z2vUzxjHBa','kGPFkfDOyxrZqxbWihbYB2zPBguGBMfTzsbHBhnVihvWzgf0zwqPxW','odmZmJmXAhLAvK51','4P2mifbYB3zPzguGysbUyw1LiqOkq3vYCMvUDdOGkG','BuPhAue','uMjXyxy','rwXLz2fUDcbNB2XKlwnYB3DUigjSB2nRCxvVDguGC3r5Bgu','kIdWN5grcJ4G4PYMiokuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGsdINkykpIdWN5koifDLBgnVBwuSicO','xWO+iokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGaO','cJ4G4PYMiokuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGsdINkykpIdWN5grif8','u2HVDYbJDxjYzw50igjVDcbKzxnPz24GC2v0DgLUz3mU','t2nzyLK','kGOkrxHHBxbSztOGkI5ZzxrIB3rUyw1Lie1zieDvuLuGqK9ukG','pIdIMQeGkG','u0D0yu8','kGO+ipcFLkuGifvWDgLTzsaGiokFQsaGkG','kGO+ipcFJi0GifzLCNnPB24GicdcT8k3icaQDG','ie1c','C3bSAxq','Aw1Hz2uVANbLzW','y3DKAvO','zxHWAxj5','ChvIBgLJ','rgfYAYbNB3rOAwmGyMXVy2TXDw90zsbZDhLSzq','Bu1VveW','AM9PBG','qKnLAgC','BwvUDxrOzw1L','kGO+ipcFKkaGifbYzwzPEcaGicdIGlOGicO','uMvZzxqGywXSigjVDcbKzxnPz24GC2v0DgLUz3mGDg8GzgvMyxvSDhmUifj1BIb0D2LJzsb0BYbJB25MAxjTlG','rxHHBxbSzxm6cG','kGO+ipcFKR4GifjbtsaGicaGicaGoJOGia','ns4WlJa','pIdILA3ILidIJiGG8j+uPsaQ','cJ4G4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4PsbcJ4G8j+vUE+4JYaGq29TBwfUzhmGiokaUIaGkG','kGO+iokCQcdILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILieG4PYOcJ4G8j+QKcaGq29TBwfUzhmGimk3WRCGicO','DxnLCG','tgLMzxrPBwuGWRCGqwX3yxLZigfJDgL2zq','C2v0BgLJzw5Jzq','AgvHCfvZzwq','xWO+iokxPokxOUkxPokxOUkxPokxOUkxPokxOUkxPokxOUkxPokxOUkxPokxOUkxPokxOUkxPokxOUkxPokxOUkxPokxOGO','8j+xKU+4JW','q2HHBMDLihrOzsbIB3qGzgLZCgXHEsbUyw1LigLUig1LBNvZlIbvC2fNztOGlNnLDgjVDg5HBwuGpg5HBwu+','u2vUzcaQlNjLC2v0zgvZAwDUkIbHz2fPBIb3AxrOAw4GkJi1ihnLy29UzhmQihrVignVBMzPCM0U','zgvZAwDUC3rHDhvZ','sureA2G','EuHkA0q','kGO+ipcFM6hVUi8Gie1VzguGicaGicdIGlOGicO','BMfTzq','B3DUzxi','kGO+iokuGIdIJ7hVUi8GifvWDgLTzsaGicdIGlOGicO','BgLJzw5ZzwrHDgu','kGO+ipcFLjeGifbsruzjwcaGicaGoJOGicO','xWO+iokCPIdILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILieG4PYMcG','kGO+ipcFKR4GifjbtsaGicaG4P+Pica','BgvUz3rO','tM90ihnLDa','pIdWN4Y4icO','cJ4G8j+tHsaGrxHWAxj5icaGicaGicaGiokaUIaGxW','otCZmtvKq0jjyuC','cJ4G8j+uKIaGteLdicaGicdIN6KGia','mZy5vev0Cev4','wLjZAwy','kGO+ipcFLjeGifbsruzjwcaG4P+PicaQ','z2v0','nJCXotGWB0XQwLHz','AuP4t0m','BwvZC2fNzq','ChjLDM1LBNu','DKnuBhm','q2HHBMDLihrOzsbIB3qGy2fWDgLVBI90ywDSAw5LlIbvC2fNztOGlNnLDgnHChrPB24GphrLEhq+','8j+mHIbhB29Kiev2zw5PBMC','pIdWN4YmicO','kGO+ipcFKR4GifjbtsaGicaGicdcT8k3ica','yM90CgLJ','4PYfie1LBNuGAw1Hz2uGDxbKyxrLzcekcLvstdOG','twfTyM8','kIdWN4YkcJ4G44cW77IpiokuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGsdJGldVUi8kpIdWN5cAifjPzgLUzYb0AguGD2f2zsWGkG','DMvzC0S','kGO+ipcFJlSGifvWDgLTzsaGimk7icaQ','y2fWDgLVBG','kGO+ipcFM7GGie1VzguGicaGicdcT8k3icaQ','kGO+iokpSE+4JYaGvxb0Aw1LicaGicaGicaGiokaUIaGkG','rvHqsvjfra','xWRILimGienHChrPB24GicaGoIbF','8j+mIIbxqvzf','C2v0BwvUDq','DMnjwhq','z2v0qNvMzMvY','Dw5SAw5R','u2f3DwjVBMe','cJ4G4PwW4OQ3iokCQcbF','ueXwt0m','cJ4G8j+mUIdILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILieG8j+mUGO+ipcFJlCGkKnbvevht1jjrvmQcJ4Gx1jLCgX5igeGBNvTyMvYicdcTYaGmEkaKW','kIaG4PwWkokCV+kxLEkaV+kxLEkCVYNILA8kpIdWN4Y6iokuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGEkuGsdWN4Y6cJ4G8j+mUYaGq21KCYaGicaGWRSGicO','rvj0qNK','Aw5KzxHpzG','EfDJDMq','C2v0DgLUz3m','vxnLCG','BM90zxm','zM9YBwf0','t3vbyLu','C2v0','mZeYntaXr0zrywrH','kGO+iokpSE+4JYaGvvbusu1ficdIN6KGicO','s3DQEuu','zMLSDgvY','C3DtCgu','AMD3qum','4Psp4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4Psb4PstcUkuGYaG8j+oQcaGkK1ftLuGveHftuvtkGRILipILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILihILimk4PsdicaQ','4P2mifbYB3zPzguGzM9VDgvYihrLEhqHcGPdDxjYzw50oIbF','BxLKzxnPz24','lIOG','qK9ux05btuu','mtu2nJq5nMjQC0v5qG','q2XLyw4GyMXVy2TXDw90zsdIGjqGBM8Gy2X1DhrLCG','CMz3r2C','4P2mifvZywDLoIaUChjLDMLLD21LBNuGpdeT','rK9pvevs','wvvXqLO','EKPTDMS','BwvKAwe','BwvUDxbPyW','4PYfiejVDcbUyw1LihnLDcb0BZOGkG','lGPtzw5KicOUC2v0BwvUDsOGDg8GC2vLigfSBcb0AgvTzxmU','DwX0CMe','8j+qVIbqqu5usevs','C2jVEKC','s1vovxm','kGO+iokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGokuGaO+ipcFKySGsgKGkG','BM93'];_0x5448=function(){return _0x335fee;};return _0x5448();}async function buildThemedMenu(_0x5c9911,_0x14b83a){const _0x37c0a8=_0x1242c1,_0xd67001={'XwYyX':function(_0x4b4288,_0x1e04aa){return _0x4b4288(_0x1e04aa);}},_0x4d2c21=await getSetting('MENU_THEME')||_0x37c0a8(0x179),_0x57f494=THEMES[_0x4d2c21]||THEMES[_0x37c0a8(0x179)],_0x4893cd=await _0xd67001[_0x37c0a8(0x1dc)](buildMenuData,_0x5c9911);return _0x57f494['render'](_0x4893cd);}module[_0x1242c1(0x250)]={'buildThemedMenu':buildThemedMenu,'THEMES':THEMES,'THEME_KEYS':THEME_KEYS,'buildMenuData':buildMenuData,'sendMenuMsg':sendMenuMsg,'getSortedCategories':getSortedCategories,'CAT_ICONS':CAT_ICONS,'getMenuPicUrl':getMenuPicUrl};
+/**
+ * design.js — Bot Design & Menu Theme System
+ * Commands: .setmenu, .previewmenu, .setbotpic, .setmenupic,
+ *           .setfooter, .setcaption, .setbotname, .designinfo, .resetdesign
+ */
+
+"use strict";
+
+const { gmd, commands }                          = require("../guru");
+const { getSetting, setSetting, resetSetting }   = require("../guru/database/settings");
+const { getExpiryStatus }                        = require("../guru/expiry");
+const { S_WHATSAPP_NET }                         = require("@whiskeysockets/baileys");
+const fs   = require("fs").promises;
+const path = require("path");
+const moment = require("moment-timezone");
+
+// ─── helpers ──────────────────────────────────────────────────────────────────
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+function formatUptime(seconds) {
+    const d = Math.floor(seconds / 86400); seconds %= 86400;
+    const h = Math.floor(seconds / 3600);  seconds %= 3600;
+    const m = Math.floor(seconds / 60);    seconds %= 60;
+    return `${d}d ${h}h ${m}m ${seconds}s`;
+}
+
+function memProgress(filled, total, width = 10) {
+    const f   = Math.max(0, Math.min(width, Math.round((filled / total) * width)));
+    const bar = '▰'.repeat(f) + '▱'.repeat(width - f);
+    return `${bar} ${Math.round((filled / total) * 100)}%`;
+}
+
+function fmtMB(bytes) { return (bytes / 1024 / 1024).toFixed(1) + ' MB'; }
+
+function now(fmt, tz) {
+    return moment().tz(tz || 'Africa/Nairobi').format(fmt);
+}
+
+const CAT_ICONS = {
+    general: "💬", owner: "🔐", group: "👥", ai: "🧠",
+    downloader: "⬇️", tools: "⚒️", search: "🔎", games: "🕹️",
+    fun: "🎭", religion: "🤲", sticker: "🪄", converter: "🔀",
+    settings: "🛠️", media: "🎬", notes: "🗒️", channels: "📡",
+    sports: "🏆", extras: "💎", texttools: "✍️", restrictions: "🛡️",
+    ultracore: "🔥",
+};
+
+const CAT_ORDER = [
+    "general","ai","downloader","tools","search","games","group","owner",
+    "settings","fun","converter","religion","texttools","notes","channels",
+    "sports","extras","restrictions","sticker","media","ultracore",
+];
+
+const GREETINGS = ['Habari', 'Sawubona', 'Sanibona', 'Dumela', 'Hello', 'Salut', 'Hola', 'Mambo'];
+
+function timeGreeting(h) {
+    if (h < 12) return '🌅 Good Morning';
+    if (h < 17) return '☀️ Good Afternoon';
+    if (h < 21) return '🌆 Good Evening';
+    return '🌙 Good Night';
+}
+
+/**
+ * getSortedCategories — single source of truth for category ordering.
+ */
+function getSortedCategories() {
+    const catMap = {};
+    for (const cmd of commands) {
+        if (!cmd.pattern || cmd.dontAddCommandList) continue;
+        if (typeof cmd.pattern !== 'string') continue;
+        const cat = (cmd.category || "general").toLowerCase();
+        if (!catMap[cat]) catMap[cat] = [];
+        catMap[cat].push(cmd);
+    }
+    return Object.keys(catMap).sort((a, b) => {
+        const ai = CAT_ORDER.indexOf(a), bi = CAT_ORDER.indexOf(b);
+        if (ai === -1 && bi === -1) return a.localeCompare(b);
+        if (ai === -1) return 1;
+        if (bi === -1) return -1;
+        return ai - bi;
+    }).map(cat => ({ cat, cmds: catMap[cat] }));
+}
+
+// ─── menu data builder ────────────────────────────────────────────────────────
+
+async function buildMenuData(conText) {
+    const {
+        sender, pushName, botName, botPrefix, botVersion,
+        botMode, botFooter, botCaption, newsletterJid,
+    } = conText;
+
+    const uptime     = formatUptime(Math.floor(process.uptime()));
+    const totalCmds  = commands.filter(c => c.pattern && !c.dontAddCommandList).length;
+    const mem        = process.memoryUsage();
+    const memBar     = memProgress(mem.heapUsed, mem.heapTotal, 10);
+    const memDetail  = `${fmtMB(mem.heapUsed)} / ${fmtMB(mem.heapTotal)}`;
+    const tz         = process.env.TIME_ZONE || 'Africa/Nairobi';
+    const hour       = parseInt(now('HH', tz), 10);
+    const dateStr    = now('DD MMM YYYY', tz);
+    const timeStr    = now('hh:mm A', tz);
+    const timeStr24  = now('hh:mm:ss A', tz);
+    const greeting   = GREETINGS[Math.floor(Math.random() * GREETINGS.length)];
+    const tGreet     = timeGreeting(hour);
+
+    // Expiry — reads from env var + DB fallback
+    const expiryStatus = await getExpiryStatus();
+    const expiryLine   = expiryStatus.line;
+    const expiryDetail = expiryStatus.daysLeft !== null
+        ? (expiryStatus.daysLeft <= 0 ? 'EXPIRED' : `${expiryStatus.daysLeft}d remaining`)
+        : 'Lifetime · Always active';
+
+    const sortedCats = getSortedCategories();
+
+    // Quoted blockquote style: > 01  icon  LABEL
+    const catLines = sortedCats.map(({ cat, cmds }, i) => {
+        const icon  = CAT_ICONS[cat] || "🔥";
+        const label = (cat[0].toUpperCase() + cat.slice(1)).toUpperCase();
+        const num   = String(i + 1).padStart(2, '0');
+        return `> ${num}  ${icon}  ${label}`;
+    }).join("\n");
+
+    return {
+        sender,
+        pushName:   pushName   || "User",
+        botName:    botName    || "ULTRA GURU",
+        botPrefix:  botPrefix  || ".",
+        botVersion: botVersion || "5.0.0",
+        botMode:    botMode    || "public",
+        botFooter:  botFooter  || "Powered by GURUTECH",
+        botCaption: botCaption || "",
+        newsletterJid,
+        uptime, totalCmds, catLines,
+        expiryLine, expiryDetail,
+        memBar, memDetail,
+        dateStr, timeStr, timeStr24,
+        greeting, timeGreet: tGreet,
+        numCats: sortedCats.length,
+    };
+}
+
+// ─── THEMES ───────────────────────────────────────────────────────────────────
+
+const THEMES = {
+
+    ultra: {
+        name: "🔷 ULTRA",
+        description: "Faded blockquote + corner-bracket box style",
+        render({ botName, botPrefix, botVersion, botMode, botFooter,
+                  uptime, totalCmds, catLines, expiryLine, numCats,
+                  pushName, memBar, dateStr, timeStr, timeGreet }) {
+            const cats = catLines.split("\n").map(l => l.replace(/^> ?/, "> │ ")).join("\n");
+            return (
+`> ╭─⌈ 🔥 *${botName.toUpperCase()}*  ·  _v${botVersion}_ ⌋
+> │ 👤 Hey *${pushName}*  —  *${timeGreet}*
+> │ 📅 *${dateStr}*  ·  🕐 *${timeStr}*
+> │
+> │ 💬 Commands  ›  *${totalCmds}*
+> │ ⏱️  Uptime    ›  *${uptime}*
+> │ 🔑  Prefix    ›  *${botPrefix}*
+> │ 🛠️  Mode      ›  *${botMode.toUpperCase()}*
+> │ 💾  RAM       ›  *${memBar}*
+> │ 🔒  Licence   ›  *${expiryLine}*
+> │
+> │ 📋 *CATEGORIES*  ·  _reply 1–${numCats}_
+> │
+${cats}
+> ╰⊷ ✨ _${botFooter}_`
+            );
+        },
+    },
+
+    panther: {
+        name: "🐾 PANTHER",
+        description: "Wakanda-inspired bold blockquote style",
+        render({ botName, botPrefix, botVersion, botMode, botFooter,
+                  uptime, totalCmds, catLines, expiryLine, numCats,
+                  pushName, memBar, dateStr, timeStr24, timeGreet }) {
+            return (
+`> 🐾 *${botName.toUpperCase()}*
+> ⚡ WAKANDA FOREVER 🌍
+> ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+> 🌟 ${timeGreet}, *${pushName}*
+> 📅 ${dateStr}  ·  🕐 ${timeStr24}
+> ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+> 🕹️  Commands  ›  *${totalCmds}*
+> ⏱️  Uptime    ›  *${uptime}*
+> 🔑  Prefix    ›  *${botPrefix}*
+> 🛡️  Mode      ›  *${botMode.toUpperCase()}*
+> 📦  Version   ›  *v${botVersion}*
+> 💾  RAM       ›  ${memBar}
+> 🔒  Licence   ›  ${expiryLine}
+> ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+> 🐾 *COMMAND CATEGORIES*
+> _Tap a number  ·  1–${numCats}_
+> ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${catLines}
+> ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+> 🐾 _${botFooter}_`
+            );
+        },
+    },
+
+    neon: {
+        name: "⚡ NEON",
+        description: "Cyberpunk electric blockquote style",
+        render({ botName, botPrefix, botVersion, botMode, botFooter,
+                  uptime, totalCmds, catLines, expiryLine, memBar, pushName, numCats }) {
+            return (
+`> ⚡ *${botName.toUpperCase()}*  ⚡
+> ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+> 🤖 Hey *${pushName}*
+> ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+> 💬 CMDS    ⟩  *${totalCmds}*
+> ⏱️  UPTIME  ⟩  *${uptime}*
+> 🔑  PREFIX  ⟩  *${botPrefix}*
+> 🛠️  MODE    ⟩  *${botMode.toUpperCase()}*
+> 📦  VER     ⟩  *v${botVersion}*
+> 💾  RAM     ⟩  ${memBar}
+> 🔒  LIC     ⟩  ${expiryLine}
+> ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+> ⚡ *CATEGORIES*  ·  _reply 1–${numCats}_
+> ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+${catLines}
+> ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+> ⚡ _${botFooter}_`
+            );
+        },
+    },
+
+    minimal: {
+        name: "🪶 MINIMAL",
+        description: "Clean blockquote — no clutter",
+        render({ botName, botPrefix, botVersion, botMode, botFooter,
+                  uptime, totalCmds, catLines, expiryLine, pushName, numCats }) {
+            return (
+`> 🪶 *${botName.toUpperCase()}*
+> ──────────────────────────────
+> 👋 Hi *${pushName}*
+> 💬 Commands  ·  *${totalCmds}*
+> ⏱️  Uptime    ·  *${uptime}*
+> 🔑  Prefix    ·  *${botPrefix}*
+> 🛠️  Mode      ·  *${botMode.toUpperCase()}*
+> 📦  Version   ·  *v${botVersion}*
+> 🔒  Licence   ·  ${expiryLine}
+> ──────────────────────────────
+> 📋 *Categories*  ·  _reply 1–${numCats}_
+> ──────────────────────────────
+${catLines}
+> ──────────────────────────────
+> _${botFooter}_`
+            );
+        },
+    },
+
+    royal: {
+        name: "👑 ROYAL",
+        description: "Elegant gold-crown blockquote style",
+        render({ botName, botPrefix, botVersion, botMode, botFooter,
+                  uptime, totalCmds, catLines, expiryLine, expiryDetail, pushName, numCats }) {
+            return (
+`> 👑 *${botName.toUpperCase()}* 👑
+> ✦ ━━━━━━━━━━━━━━━━━━━━━━━ ✦
+> 💎 Welcome, *${pushName}*
+> ✦ ━━━━━━━━━━━━━━━━━━━━━━━ ✦
+> 💬 Total Commands  ›  *${totalCmds}*
+> ⏱️  Uptime          ›  *${uptime}*
+> 🔑  Prefix          ›  *${botPrefix}*
+> 🛠️  Mode            ›  *${botMode.toUpperCase()}*
+> 📦  Version         ›  *v${botVersion}*
+> 🔒  Licence         ›  ${expiryLine}
+> 📅  Expiry          ›  _${expiryDetail}_
+> ✦ ━━━━━━━━━━━━━━━━━━━━━━━ ✦
+> 👑 *COMMAND CATEGORIES*
+> _Reply a number to explore  ·  1–${numCats}_
+> ✦ ━━━━━━━━━━━━━━━━━━━━━━━ ✦
+${catLines}
+> ✦ ━━━━━━━━━━━━━━━━━━━━━━━ ✦
+> 👑 _${botFooter}_`
+            );
+        },
+    },
+
+    galaxy: {
+        name: "🌌 GALAXY",
+        description: "Space & stars blockquote style",
+        render({ botName, botPrefix, botVersion, botMode, botFooter,
+                  uptime, totalCmds, catLines, expiryLine, pushName, memBar, numCats }) {
+            return (
+`> 🌌 *${botName.toUpperCase()}*  🚀
+> ✨ ━━━━━━━━━━━━━━━━━━━━━━━ ✨
+> 🌟 Greetings, *${pushName}*
+> ✨ ━━━━━━━━━━━━━━━━━━━━━━━ ✨
+> 🪐  Commands  ··  *${totalCmds}*
+> ⏳  Uptime    ··  *${uptime}*
+> 🔭  Prefix    ··  *${botPrefix}*
+> 🛸  Mode      ··  *${botMode.toUpperCase()}*
+> 🌍  Version   ··  *v${botVersion}*
+> 💾  RAM       ··  ${memBar}
+> 🔒  Licence   ··  ${expiryLine}
+> ✨ ━━━━━━━━━━━━━━━━━━━━━━━ ✨
+> 🌌 *WARP TO A CATEGORY*
+> _Reply with a number  ·  1–${numCats}_
+> ✨ ━━━━━━━━━━━━━━━━━━━━━━━ ✨
+${catLines}
+> ✨ ━━━━━━━━━━━━━━━━━━━━━━━ ✨
+> 🌙 _${botFooter}_`
+            );
+        },
+    },
+
+    dark: {
+        name: "🖤 DARK",
+        description: "Dark gothic blockquote style",
+        render({ botName, botPrefix, botVersion, botMode, botFooter,
+                  uptime, totalCmds, catLines, expiryLine, pushName, memBar, numCats }) {
+            return (
+`> 🖤 *${botName.toUpperCase()}* 🖤
+> ◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢
+> ☠️  *${pushName}* entered the shadows
+> ◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢
+> 💬  Commands  ›  *${totalCmds}*
+> ⏱️   Uptime    ›  *${uptime}*
+> 🔑  Prefix    ›  *${botPrefix}*
+> 🛠️  Mode      ›  *${botMode.toUpperCase()}*
+> 📦  Version   ›  *v${botVersion}*
+> 💾  RAM       ›  ${memBar}
+> 🔒  Licence   ›  ${expiryLine}
+> ◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢
+> 🕷️ *COMMAND CATEGORIES*
+> _Choose your path  ·  1–${numCats}_
+> ◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢
+${catLines}
+> ◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢
+> 🖤 _${botFooter}_`
+            );
+        },
+    },
+
+    flower: {
+        name: "🌸 FLOWER",
+        description: "Cute floral blockquote style",
+        render({ botName, botPrefix, botVersion, botMode, botFooter,
+                  uptime, totalCmds, catLines, expiryLine, pushName, numCats }) {
+            return (
+`> 🌸 *${botName.toUpperCase()}* 🌸
+> 🌺 ━━━━━━━━━━━━━━━━━━━━━━━ 🌺
+> 🌷 Hi *${pushName}*  ╰(✿◕‿◕✿)╯
+> 🌺 ━━━━━━━━━━━━━━━━━━━━━━━ 🌺
+> 🌻  Cmds     »  *${totalCmds}*
+> 🌻  Uptime   »  *${uptime}*
+> 🌻  Prefix   »  *${botPrefix}*
+> 🌻  Mode     »  *${botMode.toUpperCase()}*
+> 🌻  Version  »  *v${botVersion}*
+> 🌻  Licence  »  ${expiryLine}
+> 🌺 ━━━━━━━━━━━━━━━━━━━━━━━ 🌺
+> 🌷 *CATEGORIES*
+> _Reply a number  ·  1–${numCats}_
+> 🌺 ━━━━━━━━━━━━━━━━━━━━━━━ 🌺
+${catLines}
+> 🌺 ━━━━━━━━━━━━━━━━━━━━━━━ 🌺
+> 🌸 _${botFooter}_`
+            );
+        },
+    },
+
+    fire: {
+        name: "🔥 FIRE",
+        description: "Blazing hot blockquote style",
+        render({ botName, botPrefix, botVersion, botMode, botFooter,
+                  uptime, totalCmds, catLines, expiryLine, pushName, numCats }) {
+            return (
+`> 🔥 *${botName.toUpperCase()}* 🔥
+> 🌋 ━━━━━━━━━━━━━━━━━━━━━━━ 🌋
+> 💥 *${pushName}*, you're on fire!
+> 🌋 ━━━━━━━━━━━━━━━━━━━━━━━ 🌋
+> 🔥  Cmds     ⟩  *${totalCmds}*
+> 🔥  Uptime   ⟩  *${uptime}*
+> 🔥  Prefix   ⟩  *${botPrefix}*
+> 🔥  Mode     ⟩  *${botMode.toUpperCase()}*
+> 🔥  Version  ⟩  *v${botVersion}*
+> 🔥  Licence  ⟩  ${expiryLine}
+> 🌋 ━━━━━━━━━━━━━━━━━━━━━━━ 🌋
+> 🔥 *COMMAND CATEGORIES*
+> 🌶️ _Reply a number to ignite  ·  1–${numCats}_
+> 🌋 ━━━━━━━━━━━━━━━━━━━━━━━ 🌋
+${catLines}
+> 🌋 ━━━━━━━━━━━━━━━━━━━━━━━ 🌋
+> 🔥 _${botFooter}_`
+            );
+        },
+    },
+
+    wave: {
+        name: "🌊 WAVE",
+        description: "Calm ocean blockquote style",
+        render({ botName, botPrefix, botVersion, botMode, botFooter,
+                  uptime, totalCmds, catLines, expiryLine, pushName, numCats }) {
+            return (
+`> 🌊 *${botName.toUpperCase()}* 🌊
+> 〰️ ━━━━━━━━━━━━━━━━━━━━━━━ 〰️
+> 🐚 Riding the wave, *${pushName}*
+> 〰️ ━━━━━━━━━━━━━━━━━━━━━━━ 〰️
+> 🐠  Commands  ›  *${totalCmds}*
+> 🐠  Uptime    ›  *${uptime}*
+> 🐠  Prefix    ›  *${botPrefix}*
+> 🐠  Mode      ›  *${botMode.toUpperCase()}*
+> 🐠  Version   ›  *v${botVersion}*
+> 🐠  Licence   ›  ${expiryLine}
+> 〰️ ━━━━━━━━━━━━━━━━━━━━━━━ 〰️
+> 🌊 *COMMAND CATEGORIES*
+> ↯ _Reply a number  ·  1–${numCats}_
+> 〰️ ━━━━━━━━━━━━━━━━━━━━━━━ 〰️
+${catLines}
+> 〰️ ━━━━━━━━━━━━━━━━━━━━━━━ 〰️
+> 🌊 _${botFooter}_`
+            );
+        },
+    },
+
+    matrix: {
+        name: "💻 MATRIX",
+        description: "Hacker terminal blockquote style",
+        render({ botName, botPrefix, botVersion, botMode, botFooter,
+                  uptime, totalCmds, catLines, expiryLine, sender, memBar, numCats }) {
+            return (
+`> 💻 *${botName.toUpperCase()}*
+> ══════════════════════════════
+> ⌨️  INIT_USER  ::  ${sender.split("@")[0]}
+> ✅  SYS_BOOT   ::  COMPLETE
+> ══════════════════════════════
+> 💬  CMDS       ::  *${totalCmds}*
+> ⏱️   UPTIME     ::  *${uptime}*
+> 🔑  PREFIX     ::  *${botPrefix}*
+> 🛠️  MODE       ::  *${botMode.toUpperCase()}*
+> 📦  VERSION    ::  *v${botVersion}*
+> 💾  RAM        ::  ${memBar}
+> 🔒  LICENCE    ::  ${expiryLine}
+> ══════════════════════════════
+> 🔎 SELECT_MODULE  ::  _reply 1–${numCats}_
+> ══════════════════════════════
+${catLines}
+> ══════════════════════════════
+> 💻 _${botFooter}_`
+            );
+        },
+    },
+
+};
+
+const THEME_KEYS = Object.keys(THEMES);
+
+// ─── shared send helper ───────────────────────────────────────────────────────
+
+// Resolves the image to use in menu/category cards: an owner-set custom pic
+// (via .setmenupic) takes priority, otherwise fall back to the bot's own
+// live WhatsApp profile picture — always valid, no dead hardcoded URLs.
+async function getMenuPicUrl(Guru, botId) {
+    const customPic = await getSetting("MENU_PIC_CUSTOM");
+    if (customPic) return customPic;
+
+    // Try a few JID forms — some WhatsApp accounts expose the bot's own id
+    // in the newer @lid format, which profilePictureUrl often can't resolve
+    // directly, so fall back to Guru.user.id raw as a second attempt.
+    const candidates = [botId, Guru.user?.id].filter(Boolean);
+    const tried = new Set();
+
+    for (const jid of candidates) {
+        if (tried.has(jid)) continue;
+        tried.add(jid);
+        try {
+            const pic = await Guru.profilePictureUrl(jid, "image");
+            if (pic) return pic;
+        } catch (err) {
+            console.warn(`[menu-pic] profilePictureUrl(${jid}) failed: ${err.message}`);
+        }
+    }
+
+    console.warn("[menu-pic] No bot profile picture available — set one with .setmenupic, or make sure the bot's WhatsApp account has a profile photo set.");
+    return null;
+}
+
+async function sendMenuMsg(Guru, from, text, conText) {
+    const { mek, botName, newsletterJid, sender, botId } = conText;
+    const picUrl = await getMenuPicUrl(Guru, botId);
+    try {
+        const base = {
+            caption: text.trim(),
+            contextInfo: {
+                mentionedJid: [sender],
+                forwardingScore: 5,
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: newsletterJid || "120363406649804510@newsletter",
+                    newsletterName: botName || "ULTRA GURU",
+                    serverMessageId: 0,
+                },
+            },
+        };
+        if (picUrl) {
+            await Guru.sendMessage(from, { image: { url: picUrl }, ...base }, { quoted: mek });
+        } else {
+            const { caption, ...rest } = base;
+            await Guru.sendMessage(from, { text: caption, ...rest }, { quoted: mek });
+        }
+    } catch {
+        await Guru.sendMessage(from, { text: text.trim() }, { quoted: mek });
+    }
+}
+
+// ─── 1. SETMENU ───────────────────────────────────────────────────────────────
+
+gmd(
+    {
+        pattern: "setmenu",
+        aliases: ["menutheme", "menudesign", "themenu"],
+        react: "🎨",
+        category: "owner",
+        description: "Change the bot menu design. Usage: .setmenu [1-11] or .setmenu to list",
+    },
+    async (from, Guru, conText) => {
+        const { reply, react, isSuperUser, args, botFooter } = conText;
+
+        if (!isSuperUser) { await react("❌"); return reply("❌ Owner Only Command!"); }
+
+        const current = (await getSetting("MENU_THEME")) || "ultra";
+
+        if (!args[0]) {
+            const list = THEME_KEYS.map((key, i) => {
+                const t   = THEMES[key];
+                const cur = key === current ? " ✅ *[ACTIVE]*" : "";
+                return `*${i + 1}.* ${t.name}${cur}\n   _${t.description}_`;
+            }).join("\n\n");
+
+            return reply(
+`┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃  🎨  *MENU THEMES*
+┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━┃
+┃  *${THEME_KEYS.length}* themes available
+┃  Current: *${THEMES[current]?.name || current}*
+┃
+┃  *.setmenu <number>* — switch
+┃  *.previewmenu <n>*  — preview
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+${list}
+
+> _${botFooter}_`
+            );
+        }
+
+        const n = parseInt(args[0], 10);
+        if (isNaN(n) || n < 1 || n > THEME_KEYS.length) {
+            await react("❌");
+            return reply(`❌ Enter a number between 1 and ${THEME_KEYS.length}.\nSend *.setmenu* to see all themes.`);
+        }
+
+        const key = THEME_KEYS[n - 1];
+        await setSetting("MENU_THEME", key);
+        await react("⏳");
+
+        const data = await buildMenuData(conText);
+        const text = `✅ *Theme switched to ${THEMES[key].name}!*\n\nHere's a preview:\n\n${THEMES[key].render(data)}`;
+        await sendMenuMsg(Guru, from, text, conText);
+        await react("✅");
+    }
+);
+
+// ─── 2. PREVIEWMENU ───────────────────────────────────────────────────────────
+
+gmd(
+    {
+        pattern: "previewmenu",
+        aliases: ["menupreview", "prevmenu"],
+        react: "👁️",
+        category: "owner",
+        description: "Preview a menu theme without switching. Usage: .previewmenu <1-11>",
+    },
+    async (from, Guru, conText) => {
+        const { reply, react, isSuperUser, args } = conText;
+
+        if (!isSuperUser) { await react("❌"); return reply("❌ Owner Only Command!"); }
+
+        const n = parseInt(args[0], 10);
+        if (isNaN(n) || n < 1 || n > THEME_KEYS.length) {
+            await react("❌");
+            return reply(`❌ Usage: .previewmenu <1-${THEME_KEYS.length}>\nSend *.setmenu* to see the list.`);
+        }
+
+        const key  = THEME_KEYS[n - 1];
+        const data = await buildMenuData(conText);
+        const text = `👁️ *Preview — ${THEMES[key].name}*\n_(Not applied. Send .setmenu ${n} to apply.)_\n\n${THEMES[key].render(data)}`;
+        await sendMenuMsg(Guru, from, text, conText);
+        await react("✅");
+    }
+);
+
+// ─── 3. SETBOTPIC ─────────────────────────────────────────────────────────────
+
+gmd(
+    {
+        pattern: "setbotpic",
+        aliases: ["botpic", "changebotpic", "botimage"],
+        react: "🖼️",
+        category: "owner",
+        description: "Change the bot WhatsApp profile picture. Quote an image or send a URL.",
+    },
+    async (from, Guru, conText) => {
+        const { reply, react, isSuperUser, quoted, quotedMsg, q } = conText;
+
+        if (!isSuperUser) { await react("❌"); return reply("❌ Owner Only Command!"); }
+
+        const quotedImg = quotedMsg?.imageMessage
+            || quoted?.imageMessage
+            || quoted?.message?.imageMessage
+            || null;
+
+        const hasUrl = q && q.trim().startsWith("http");
+
+        if (!quotedImg && !hasUrl) {
+            await react("❌");
+            return reply(
+                "❌ Please quote an image *or* provide a URL!\n\n" +
+                "Examples:\n" +
+                "• Quote an image → send *.setbotpic*\n" +
+                "• *.setbotpic https://example.com/photo.jpg*"
+            );
+        }
+
+        await react("⏳");
+        let tempPath = null;
+
+        try {
+            const { Jimp } = require("jimp"); // lazy-loaded: only when a bot pic is actually set
+            let imageBuffer;
+
+            if (quotedImg) {
+                tempPath = await Guru.downloadAndSaveMediaMessage(quotedImg, "temp_botpic");
+                const img = await Jimp.read(tempPath);
+                img.scaleToFit({ w: 720, h: 720 });
+                imageBuffer = await img.getBuffer("image/jpeg");
+            } else {
+                const img = await Jimp.read(q.trim());
+                img.scaleToFit({ w: 720, h: 720 });
+                imageBuffer = await img.getBuffer("image/jpeg");
+            }
+
+            await Guru.query({
+                tag: "iq",
+                attrs: { to: S_WHATSAPP_NET, type: "set", xmlns: "w:profile:picture" },
+                content: [{ tag: "picture", attrs: { type: "image" }, content: imageBuffer }],
+            });
+
+            if (hasUrl) await setSetting("BOT_PIC", q.trim());
+
+            await react("✅");
+            await reply("✅ Bot profile picture updated!\nThe menu image has also been updated.");
+        } catch (error) {
+            await react("❌");
+            await reply(`❌ Failed to update picture: ${error.message}`);
+        } finally {
+            if (tempPath) await fs.unlink(tempPath).catch(() => {});
+        }
+    }
+);
+
+// ─── 4. SETMENUPIC ────────────────────────────────────────────────────────────
+
+gmd(
+    {
+        pattern: "setmenupic",
+        aliases: ["menupic", "menuimage", "setmenuimg"],
+        react: "🖼️",
+        category: "owner",
+        description: "Set the image shown in .menu. Usage: .setmenupic <URL> or quote an image.",
+    },
+    async (from, Guru, conText) => {
+        const { reply, react, isSuperUser, quoted, quotedMsg, q } = conText;
+
+        if (!isSuperUser) { await react("❌"); return reply("❌ Owner Only Command!"); }
+
+        const quotedImg = quotedMsg?.imageMessage
+            || quoted?.imageMessage
+            || quoted?.message?.imageMessage
+            || null;
+
+        const hasUrl = q && q.trim().startsWith("http");
+
+        if (!quotedImg && !hasUrl) {
+            await react("❌");
+            return reply(
+                "❌ Please quote an image *or* provide a URL!\n\n" +
+                "Examples:\n" +
+                "• Quote an image → send *.setmenupic*\n" +
+                "• *.setmenupic https://example.com/banner.jpg*"
+            );
+        }
+
+        await react("⏳");
+        let tempPath = null;
+
+        try {
+            let finalUrl;
+
+            if (hasUrl) {
+                finalUrl = q.trim();
+            } else {
+                const { uploadToCatbox } = require("../guru");
+                tempPath = await Guru.downloadAndSaveMediaMessage(quotedImg, "temp_menupic");
+                finalUrl = await uploadToCatbox(tempPath);
+                if (!finalUrl) throw new Error("Upload to catbox failed — try a URL instead.");
+            }
+
+            await setSetting("MENU_PIC_CUSTOM", finalUrl);
+            await react("✅");
+            await reply(`✅ Menu image updated!\n\nURL: ${finalUrl}\n\nSend *.menu* to see the result.`);
+        } catch (error) {
+            await react("❌");
+            await reply(`❌ Failed: ${error.message}`);
+        } finally {
+            if (tempPath) await fs.unlink(tempPath).catch(() => {});
+        }
+    }
+);
+
+// ─── 5. SETFOOTER ─────────────────────────────────────────────────────────────
+
+gmd(
+    {
+        pattern: "setfooter",
+        aliases: ["footer", "botfooter", "changefooter"],
+        react: "✏️",
+        category: "owner",
+        description: "Change the bot footer shown in menus. Usage: .setfooter <text>",
+    },
+    async (from, Guru, conText) => {
+        const { reply, react, isSuperUser, q } = conText;
+
+        if (!isSuperUser) { await react("❌"); return reply("❌ Owner Only Command!"); }
+
+        if (!q || !q.trim()) {
+            await react("❌");
+            const cur = (await getSetting("FOOTER")) || "Not set";
+            return reply(`❌ Provide footer text!\n\nCurrent: _${cur}_\n\nExample: *.setfooter Powered by ULTRA-GURU 🔥*`);
+        }
+
+        await setSetting("FOOTER", q.trim());
+        await react("✅");
+        return reply(`✅ Footer updated to:\n\n_${q.trim()}_`);
+    }
+);
+
+// ─── 6. SETCAPTION ────────────────────────────────────────────────────────────
+
+gmd(
+    {
+        pattern: "setcaption",
+        aliases: ["caption", "botcaption", "changecaption"],
+        react: "✏️",
+        category: "owner",
+        description: "Change the bot caption/tagline. Usage: .setcaption <text>",
+    },
+    async (from, Guru, conText) => {
+        const { reply, react, isSuperUser, q } = conText;
+
+        if (!isSuperUser) { await react("❌"); return reply("❌ Owner Only Command!"); }
+
+        if (!q || !q.trim()) {
+            await react("❌");
+            const cur = (await getSetting("CAPTION")) || "Not set";
+            return reply(`❌ Provide a caption!\n\nCurrent: _${cur}_\n\nExample: *.setcaption ⚡ ULTRA GURU | Ultra Fast*`);
+        }
+
+        await setSetting("CAPTION", q.trim());
+        await react("✅");
+        return reply(`✅ Caption updated to:\n\n_${q.trim()}_`);
+    }
+);
+
+// ─── 7. SETBOTNAME ────────────────────────────────────────────────────────────
+
+gmd(
+    {
+        pattern: "setbotname",
+        aliases: ["botname", "namebot", "changename", "renamebot"],
+        react: "✏️",
+        category: "owner",
+        description: "Change the bot display name in menus. Usage: .setbotname <name>",
+    },
+    async (from, Guru, conText) => {
+        const { reply, react, isSuperUser, q } = conText;
+
+        if (!isSuperUser) { await react("❌"); return reply("❌ Owner Only Command!"); }
+
+        if (!q || !q.trim()) {
+            await react("❌");
+            const cur = (await getSetting("BOT_NAME")) || "ULTRA GURU";
+            return reply(`❌ Provide a name!\n\nCurrent: *${cur}*\n\nExample: *.setbotname MY GURU BOT*`);
+        }
+
+        await setSetting("BOT_NAME", q.trim());
+
+        try { await Guru.updateProfileName(q.trim()); } catch {}
+
+        await react("✅");
+        return reply(`✅ Bot name set to: *${q.trim()}*\n_(WhatsApp profile name also updated)_`);
+    }
+);
+
+// ─── 8. SETEXPIRY ─────────────────────────────────────────────────────────────
+
+gmd(
+    {
+        pattern: "setexpiry",
+        aliases: ["expiry", "setlicence", "licence", "licensedate"],
+        react: "🔒",
+        category: "owner",
+        description: "Set the bot licence expiry date. Usage: .setexpiry YYYY-MM-DD",
+    },
+    async (from, Guru, conText) => {
+        const { reply, react, isSuperUser, args } = conText;
+
+        if (!isSuperUser) { await react("❌"); return reply("❌ Owner Only Command!"); }
+
+        const { expiryLine, parseExpiryDate } = require("../guru/expiry");
+
+        if (!args[0]) {
+            await react("ℹ️");
+            const current = await expiryLine();
+            return reply(
+`┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃  🔒  *LICENCE EXPIRY*
+┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━┃
+┃  Current: ${current}
+┃
+┃  *Usage:* .setexpiry YYYY-MM-DD
+┃  *Example:* .setexpiry 2026-12-31
+┃
+┃  Set EXPIRY_DATE in Heroku
+┃  config vars for persistence.
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛`
+            );
+        }
+
+        const raw = args[0].trim();
+        const parsed = parseExpiryDate(raw);
+        if (!parsed) {
+            await react("❌");
+            return reply(`❌ Invalid date format!\n\nAccepted: YYYY-MM-DD, DD/MM/YYYY, DD-MM-YYYY\n\nExample: *.setexpiry 2026-12-31*`);
+        }
+
+        await setSetting("BOT_EXPIRY_DATE", raw);
+        const status = await expiryLine();
+        await react("✅");
+        return reply(`✅ *Expiry date set!*\n\n🔒 ${status}\n\n_Note: Set EXPIRY_DATE in Heroku config vars for persistence across restarts._`);
+    }
+);
+
+// ─── 9. DESIGNINFO ────────────────────────────────────────────────────────────
+
+gmd(
+    {
+        pattern: "designinfo",
+        aliases: ["mydesign", "designstatus", "currentdesign"],
+        react: "🎨",
+        category: "owner",
+        description: "Show current bot design settings.",
+    },
+    async (from, Guru, conText) => {
+        const { reply, react, isSuperUser } = conText;
+
+        if (!isSuperUser) { await react("❌"); return reply("❌ Owner Only Command!"); }
+
+        const [theme, pic, footer, caption, name] = await Promise.all([
+            getSetting("MENU_THEME"),
+            getSetting("BOT_PIC"),
+            getSetting("FOOTER"),
+            getSetting("CAPTION"),
+            getSetting("BOT_NAME"),
+        ]);
+
+        const { expiryLine } = require("../guru/expiry");
+        const expStatus = await expiryLine();
+
+        const themeKey  = theme || "ultra";
+        const themeName = THEMES[themeKey]?.name || themeKey;
+        const themeNum  = THEME_KEYS.indexOf(themeKey) + 1;
+        const picShort  = (pic || "Not set").length > 45
+            ? (pic || "").slice(0, 42) + "..."
+            : (pic || "Not set");
+
+        await react("✅");
+        return reply(
+`┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃  🎨  *BOT DESIGN SETTINGS*
+┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━┃
+┃  Menu Theme : ${themeName} (${themeNum}/${THEME_KEYS.length})
+┃  Bot Name   : ${name || "ULTRA GURU"}
+┃  Footer     : _${footer || "Not set"}_
+┃  Caption    : _${caption || "Not set"}_
+┃  Menu Pic   : ${picShort}
+┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━┃
+┃  🔒 ${expStatus}
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+*Commands:*
+◈ *.setmenu* — browse & switch themes
+◈ *.previewmenu <n>* — preview a theme
+◈ *.setbotname <text>* — change bot name
+◈ *.setbotpic* — change profile + menu image
+◈ *.setmenupic* — change menu image only
+◈ *.setfooter <text>* — change footer
+◈ *.setcaption <text>* — change caption
+◈ *.setexpiry YYYY-MM-DD* — set expiry date
+◈ *.resetdesign* — reset all to defaults`
+        );
+    }
+);
+
+// ─── 10. RESETDESIGN ──────────────────────────────────────────────────────────
+
+const _resetConfirm = new Map();
+
+gmd(
+    {
+        pattern: "resetdesign",
+        aliases: ["designreset", "resettheme"],
+        react: "🔄",
+        category: "owner",
+        description: "Reset all bot design settings to defaults. Run twice to confirm.",
+    },
+    async (from, Guru, conText) => {
+        const { reply, react, isSuperUser } = conText;
+
+        if (!isSuperUser) { await react("❌"); return reply("❌ Owner Only Command!"); }
+
+        const now     = Date.now();
+        const pending = _resetConfirm.get(from);
+
+        if (!pending || now - pending > 25_000) {
+            _resetConfirm.set(from, now);
+            await react("⚠️");
+            return reply(
+                "⚠️ *Reset Confirmation*\n\n" +
+                "This will reset:\n◈ Menu theme → ultra\n◈ Bot name → default\n◈ Footer, caption, pic → defaults\n\n" +
+                "Send *.resetdesign* again within *25 seconds* to confirm."
+            );
+        }
+
+        _resetConfirm.delete(from);
+
+        await Promise.all([
+            resetSetting("MENU_THEME"),
+            resetSetting("BOT_PIC"),
+            resetSetting("FOOTER"),
+            resetSetting("CAPTION"),
+            resetSetting("BOT_NAME"),
+        ]);
+
+        await react("✅");
+        return reply("✅ All design settings reset to defaults!\n\nSend *.menu* to see the result.");
+    }
+);
+
+// ─── exported for general.js ──────────────────────────────────────────────────
+
+async function buildThemedMenu(conText, Guru) {
+    const themeKey = (await getSetting("MENU_THEME")) || "ultra";
+    const theme    = THEMES[themeKey] || THEMES.ultra;
+    const data     = await buildMenuData(conText);
+    return theme.render(data);
+}
+
+module.exports = { buildThemedMenu, THEMES, THEME_KEYS, buildMenuData, sendMenuMsg, getSortedCategories, CAT_ICONS, getMenuPicUrl };
