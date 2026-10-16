@@ -1,1 +1,684 @@
-const a0_0x930fcc=a0_0x413a;(function(_0x2b1083,_0x5b0e97){const _0x129f7b=a0_0x413a,_0x4fe0ff=_0x2b1083();while(!![]){try{const _0x142adc=-parseInt(_0x129f7b(0xfb))/0x1*(parseInt(_0x129f7b(0xf4))/0x2)+-parseInt(_0x129f7b(0xdc))/0x3*(parseInt(_0x129f7b(0x130))/0x4)+-parseInt(_0x129f7b(0x114))/0x5*(-parseInt(_0x129f7b(0xe9))/0x6)+-parseInt(_0x129f7b(0x107))/0x7+-parseInt(_0x129f7b(0x100))/0x8*(-parseInt(_0x129f7b(0xd7))/0x9)+parseInt(_0x129f7b(0xa0))/0xa*(parseInt(_0x129f7b(0xd1))/0xb)+parseInt(_0x129f7b(0xaa))/0xc*(parseInt(_0x129f7b(0x124))/0xd);if(_0x142adc===_0x5b0e97)break;else _0x4fe0ff['push'](_0x4fe0ff['shift']());}catch(_0x3bf577){_0x4fe0ff['push'](_0x4fe0ff['shift']());}}}(a0_0x2e78,0xf4206));const {Boom}=require(a0_0x930fcc(0x10f)),{DisconnectReason}=require('@whiskeysockets/baileys'),fs=require(a0_0x930fcc(0x102)),path=require('path'),{setupGroupCacheListeners}=require(a0_0x930fcc(0x10a)),{resetUpdateFlag}=require(a0_0x930fcc(0x129)),{setupRestrictionManager,resetRestrictionListeners}=require(a0_0x930fcc(0x119)),{setupVVTracker,GuruAntiViewOnce,sendVVAnonymous,isViewOnceMsg,extractViewOnceData}=require(a0_0x930fcc(0xeb)),{getAllSettings}=require(a0_0x930fcc(0xe3)),RECONNECT_DELAY=0x1388,MAX_RECONNECT_ATTEMPTS=0x32,WATCHDOG_INTERVAL=0x1d4c0,WATCHDOG_TIMEOUT=0xafc8;let reconnectAttempts=0x0,channelReactListenerActive=![],watchdogTimer=null,isReconnecting=![],isWatchdogReconnect=![];const withJitter=_0xb23d82=>_0xb23d82+Math['floor'](Math[a0_0x930fcc(0xd0)]()*_0xb23d82*0.3),_keepAlive=_0x4a0f6b=>{const _0x25f079=a0_0x930fcc,_0x15d4ce=process.env.REPL_DEV_DOMAIN||process.env.REPLIT_DOMAINS||_0x25f079(0xca);console[_0x25f079(0xe4)]('\x0a'+'═'['repeat'](0x3c)),console[_0x25f079(0xe4)]('🔗\x20BOT\x20DISCONNECTED\x20—\x20'+_0x4a0f6b),console[_0x25f079(0xe4)](_0x25f079(0xfd)),console[_0x25f079(0xe4)](_0x25f079(0xaf)+_0x15d4ce+'/pair\x20to\x20get\x20a\x20new\x20SESSION_ID'),console[_0x25f079(0xe4)](_0x25f079(0xcc)),console[_0x25f079(0xe4)]('═'[_0x25f079(0xa9)](0x3c)+'\x0a'),global[_0x25f079(0xf9)]=!![];},clearWatchdog=()=>{watchdogTimer&&(clearInterval(watchdogTimer),watchdogTimer=null);},forceReconnect=(_0x3af092,_0x32130e,_0x2699d4)=>{const _0x27d2a9=a0_0x930fcc;if(isReconnecting)return;console['warn'](_0x27d2a9(0x111)+_0x2699d4+_0x27d2a9(0xf5)),clearWatchdog(),isReconnecting=!![],isWatchdogReconnect=!![];try{_0x3af092['end'](new Error(_0x2699d4));}catch(_0x15c2ff){}setTimeout(()=>{isReconnecting=![],_0x32130e();},withJitter(RECONNECT_DELAY));},startWatchdog=(_0x136355,_0x464e2e)=>{clearWatchdog(),watchdogTimer=setInterval(async()=>{const _0x47ceaf=a0_0x413a;if(isReconnecting)return;try{const _0x19b966=_0x136355['ws'],_0x48af13=_0x19b966&&(_0x19b966[_0x47ceaf(0x118)]===0x1||_0x19b966[_0x47ceaf(0xc1)]===!![]);if(!_0x48af13)return forceReconnect(_0x136355,_0x464e2e,_0x47ceaf(0xfa));}catch(_0xd36f6f){return forceReconnect(_0x136355,_0x464e2e,_0x47ceaf(0x9c)+_0xd36f6f['message']);}try{const {getSetting:_0x5d7aba}=require(_0x47ceaf(0xe3)),_0x5ae22c=await _0x5d7aba(_0x47ceaf(0xda))['catch'](()=>_0x47ceaf(0xba)),_0x550626=_0x5ae22c==='true'?_0x47ceaf(0xb3):_0x47ceaf(0xbf);await _0x136355[_0x47ceaf(0x12e)](_0x550626);}catch(_0x57fa09){return forceReconnect(_0x136355,_0x464e2e,_0x47ceaf(0xb0)+_0x57fa09[_0x47ceaf(0x11a)]);}},WATCHDOG_INTERVAL);},PROFESSOR_EMOJIS=['❤️','🔥','👍','😂','😮','😢','🙏','👏','🎉','💯','😍','🥰','😊','👌','✨','💪'],getRandomProfessorEmoji=()=>PROFESSOR_EMOJIS[Math[a0_0x930fcc(0x97)](Math['random']()*PROFESSOR_EMOJIS[a0_0x930fcc(0xc7)])],OWNER_CHANNELS=[],getOwnerChannels=async()=>{const _0x5417ce=a0_0x930fcc,_0x2b2169=[];try{const {getSetting:_0x1037bd}=require(_0x5417ce(0xe3)),_0x1028da=await _0x1037bd(_0x5417ce(0x11e));_0x1028da&&_0x1028da['split'](',')[_0x5417ce(0x106)](_0x4c52ea=>_0x4c52ea[_0x5417ce(0xa6)]())['filter'](_0xf28c94=>_0xf28c94[_0x5417ce(0xc3)]('@newsletter'))['forEach'](_0x15db7f=>_0x2b2169[_0x5417ce(0xae)](_0x15db7f));const _0x13347e=await _0x1037bd(_0x5417ce(0xff));_0x13347e&&_0x13347e['endsWith'](_0x5417ce(0x11b))&&!_0x2b2169[_0x5417ce(0xa3)](_0x13347e)&&_0x2b2169['unshift'](_0x13347e);}catch(_0x77ccf8){}return[...new Set([...OWNER_CHANNELS,..._0x2b2169])];},safeNewsletterFollow=async(_0x2d3775,_0x1f6145)=>{const _0x4c1e3f=a0_0x930fcc;if(!_0x1f6145)return![];try{return await _0x2d3775[_0x4c1e3f(0xde)](_0x1f6145),!![];}catch(_0x1236a5){return console[_0x4c1e3f(0xe0)]('❌\x20Channel\x20follow\x20failed\x20for\x20'+_0x1f6145+':',_0x1236a5[_0x4c1e3f(0x11a)]),![];}},safeGroupAcceptInvite=async(_0x2d7172,_0x2af05e)=>{const _0xe56596=a0_0x930fcc;if(!_0x2af05e)return![];try{return await _0x2d7172[_0xe56596(0x117)](_0x2af05e),!![];}catch(_0xfbcc7a){switch(_0xfbcc7a[_0xe56596(0x98)]){case 0x199:console[_0xe56596(0xe4)](_0xe56596(0xb9)+_0x2af05e);break;case 0x190:console[_0xe56596(0xe4)]('⚠️\x20Invalid\x20invite\x20code\x20for\x20group:\x20'+_0x2af05e);break;case 0x193:console[_0xe56596(0xe4)]('⚠️\x20No\x20permission\x20to\x20join\x20group:\x20'+_0x2af05e);break;default:console['error'](_0xe56596(0x126)+_0x2af05e+':',_0xfbcc7a['message']);}return![];}},autoFollowOwnerChannels=async _0x5477a2=>{const _0x504590=a0_0x930fcc,_0x22cc3b=await getOwnerChannels();for(const _0x3c9038 of _0x22cc3b){await safeNewsletterFollow(_0x5477a2,_0x3c9038);}_0x22cc3b[_0x504590(0xc7)]>0x0&&console[_0x504590(0xe4)](_0x504590(0xef)+_0x22cc3b[_0x504590(0xc7)]+_0x504590(0x12b));},setupNewsletterReactions=_0x156900=>{const _0xf13ebf=a0_0x930fcc;if(channelReactListenerActive)return;channelReactListenerActive=!![],_0x156900['ev']['on'](_0xf13ebf(0x9e),async({messages:_0x5362a4,type:_0x53d297})=>{const _0x1b296a=_0xf13ebf;try{if(_0x53d297!==_0x1b296a(0xac))return;for(const _0x10d4c7 of _0x5362a4){if(!_0x10d4c7?.['key']?.[_0x1b296a(0xd8)])continue;const _0xca5958=_0x10d4c7[_0x1b296a(0xec)][_0x1b296a(0xd8)];if(!_0xca5958['endsWith'](_0x1b296a(0x11b)))continue;try{const {getSetting:_0x1c5849}=require(_0x1b296a(0xe3)),_0x2271ac=await _0x1c5849(_0x1b296a(0xdb));if(_0x2271ac==='false')continue;}catch(_0x4f1761){}const _0x39604c=await getOwnerChannels();if(!_0x39604c[_0x1b296a(0xa3)](_0xca5958))continue;const _0x3ee5a5=_0x10d4c7[_0x1b296a(0xf3)];if(_0x3ee5a5===undefined||_0x3ee5a5===null)continue;const _0x4510ef=getRandomProfessorEmoji();try{typeof _0x156900[_0x1b296a(0xc5)]===_0x1b296a(0xc9)?(await _0x156900[_0x1b296a(0xc5)](_0xca5958,_0x3ee5a5[_0x1b296a(0xbb)](),_0x4510ef),console[_0x1b296a(0xe4)](_0x1b296a(0x101)+_0xca5958[_0x1b296a(0xcd)]('@')[0x0]+_0x1b296a(0xf1)+_0x3ee5a5+_0x1b296a(0x10c)+_0x4510ef)):console[_0x1b296a(0x96)](_0x1b296a(0x10d));}catch(_0x81456e){console[_0x1b296a(0xe0)](_0x1b296a(0xb1)+_0xca5958+'\x20#'+_0x3ee5a5+':',_0x81456e['message']);}}}catch(_0x216167){console[_0x1b296a(0xe0)]('Newsletter\x20react\x20error:',_0x216167['message']);}});},stalkTargets=new Map(),addStalkTarget=(_0x5204aa,_0x50f479,_0x42dc2a)=>{const _0x3bf1fb=a0_0x930fcc;if(!stalkTargets['has'](_0x5204aa))stalkTargets[_0x3bf1fb(0xa8)](_0x5204aa,[]);const _0x1caa09=stalkTargets[_0x3bf1fb(0x10e)](_0x5204aa);!_0x1caa09[_0x3bf1fb(0xe1)](_0x5a788f=>_0x5a788f['requesterJid']===_0x50f479)&&_0x1caa09[_0x3bf1fb(0xae)]({'requesterJid':_0x50f479,'label':_0x42dc2a});},removeStalkTarget=(_0x47d283,_0x53477b)=>{const _0x5422fb=a0_0x930fcc;if(!stalkTargets['has'](_0x47d283))return![];const _0x261bbe=stalkTargets[_0x5422fb(0x10e)](_0x47d283)[_0x5422fb(0xb5)](_0x4d39bc=>_0x4d39bc['requesterJid']!==_0x53477b);if(_0x261bbe['length']===0x0)stalkTargets[_0x5422fb(0xf2)](_0x47d283);else stalkTargets[_0x5422fb(0xa8)](_0x47d283,_0x261bbe);return!![];},getStalkTargets=()=>stalkTargets;let stalkListenerActive=![];const setupStalkListener=_0x4b1472=>{if(stalkListenerActive)return;stalkListenerActive=!![],_0x4b1472['ev']['on']('presence.update',({id:_0x2c05eb,presences:_0x3ea618})=>{const _0x5793bd=a0_0x413a;try{for(const [_0xf09016,_0x49124b]of Object[_0x5793bd(0xb8)](_0x3ea618||{})){const _0x2b8289=_0xf09016['split']('@')[0x0][_0x5793bd(0xcd)](':')[0x0];if(!stalkTargets[_0x5793bd(0x12a)](_0x2b8289))continue;const _0x303a99=_0x49124b?.[_0x5793bd(0xf7)];if(_0x303a99!==_0x5793bd(0xbf))continue;const _0x2e60ad=stalkTargets[_0x5793bd(0x10e)](_0x2b8289),_0xb36ce0=new Date()[_0x5793bd(0xe8)]();for(const {requesterJid:_0x1fcb04,label:_0xa5c494}of _0x2e60ad){_0x4b1472[_0x5793bd(0xd5)](_0x1fcb04,{'text':_0x5793bd(0x120)+(_0xa5c494||'+'+_0x2b8289)+'*\x0a🟢\x20Status:\x20*Online\x20Now*\x0a🕐\x20Time:\x20'+_0xb36ce0+'\x0a\x0a_Use\x20`.unstalk\x20'+(_0xa5c494||'+'+_0x2b8289)+_0x5793bd(0x9b)})['catch'](()=>{});}}}catch(_0x4dc751){}});};let _antiVOListenerActive=![];function a0_0x2e78(){const _0x32bcec=['newsletterReactMessage()\x20not\x20available\x20on\x20this\x20Baileys\x20build\x20—\x20cannot\x20auto-react\x20to\x20channel\x20posts.','get','@hapi/boom','@s.whatsapp.net','⚠️\x20Watchdog:\x20','participant','✅\x20Connection\x20Instance\x20is\x20Online','1815245ZYnrIE','⚠️\x20','ULTRA\x20GURU','groupAcceptInvite','readyState','../restrictionManager','message','@newsletter','contextInfo','\x20reconnect\x20attempts\x20exhausted\x20—\x20cooling\x20down\x20for\x202\x20minutes\x20before\x20retrying...','OWNER_CHANNELS','text','👁️\x20*STALK\x20ALERT*\x20👁️\x0a╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍\x0a📱\x20Target:\x20*','buttonsResponseMessage','viewOnceMessageV2','add','21305453qyBPnu','templateButtonReplyMessage','❌\x20Group\x20join\x20failed\x20for\x20','indm','videoMessage','../autoUpdater','has','\x20channel(s)','pow','size','sendPresenceUpdate','Bad\x20session\x20detected','20xxYpdT','status@broadcast','s...','warn','floor','data','🔄\x20Reconnect\x20attempt\x20','statusCode','`\x20to\x20stop\x20tracking._','WebSocket\x20check\x20error:\x20','stanzaId','messages.upsert','connectionReplaced','10CpXJdK','imageMessage','timedOut','includes','viewOnceMessageV2Extension','⚠️\x20Watchdog-triggered\x20close\x20received\x20code\x20500\x20—\x20reconnecting\x20safely...','trim','🔄\x20WhatsApp\x20restart\x20signal\x20received\x20—\x20reconnecting\x20quickly...','set','repeat','12OTqBAP','Failed\x20to\x20remove\x20session:','notify','futureProofMessage','push','\x20\x20\x20👉\x20Visit\x20https://','Keepalive\x20failed:\x20','❌\x20Channel\x20react\x20failed\x20for\x20','stickerMessage','unavailable','viewOnceMessage','filter','viewOnce','[AutoSaveVO]\x20Error:','entries','ℹ️\x20Already\x20in\x20group:\x20','false','toString','connection.update','msg','loggedOut','available','restartRequired','isOpen','connecting','endsWith','quotedMessage','newsletterReactMessage','now','length','OWNER_NUMBER','function','your-repl-url','\x20in\x20','\x20\x20\x20Then\x20update\x20SESSION_ID\x20in\x20Replit\x20Secrets\x20and\x20restart.','split','ephemeralMessage','⚠️\x20Connection\x20closed.\x20Reason\x20code:\x20','random','9315449wzeIkI','close','🕗\x20Connecting\x20Bot...','🔄\x20Transient\x20disconnect\x20—\x20reconnecting...','sendMessage','reactionMessage','90JRBGFv','remoteJid','min','FREEZE_LAST_SEEN','AUTO_CHANNEL_LIKE','815322TbLJOF','connectionClosed','newsletterFollow','Connection\x20replaced','error','find','Logged\x20out','../database/settings','log','ANTIVIEWONCE','deviceSentMessage','remove','toLocaleString','6wHzSpN','senderJid','../gmdFunctions2','key','interactiveResponseMessage','⚠️\x20Connection\x20replaced\x20—\x20another\x20device\x20is\x20using\x20this\x20session.','📡\x20Auto-followed\x20','catch',']\x20#','delete','newsletterServerId','2119042ASrjQQ','\x20—\x20forcing\x20reconnect...','audioMessage','lastKnownPresence','open','_botDisconnected','WebSocket\x20not\x20open','1lTxdyr','❌\x20Device\x20logged\x20out\x20—\x20deleting\x20session.','\x20\x20\x20The\x20web\x20server\x20is\x20still\x20running.','fromMe','NEWSLETTER_JID','1518520jMbzSM','📡\x20Auto-reacted\x20to\x20channel\x20post\x20[','fs-extra','extendedTextMessage','onOpen','❌\x20Bad\x20session\x20—\x20deleting\x20session\x20file.','map','9300242VwhjVP','listResponseMessage','badSession','./groupCache','BOT_NAME','\x20with\x20'];a0_0x2e78=function(){return _0x32bcec;};return a0_0x2e78();}const _voCache=new Map(),_voIndex=new Map(),_VO_TTL=0x1e*0x3c*0x3e8,_cacheVO=_0x1b0543=>{const _0x2a48f6=a0_0x930fcc,_0x39ff6e=_0x1b0543[_0x2a48f6(0xec)]['id'],_0x1ae949=_0x1b0543[_0x2a48f6(0xec)]['remoteJid'],_0x42ae75=_0x1b0543[_0x2a48f6(0xec)][_0x2a48f6(0x112)]||_0x1ae949,_0x43e1d0={'msg':_0x1b0543,'remoteJid':_0x1ae949,'senderJid':_0x42ae75,'ts':Date[_0x2a48f6(0xc6)]()};_voCache[_0x2a48f6(0xa8)](_0x39ff6e,_0x43e1d0);const _0x1a4df9=_0x1ae949+'|'+_0x42ae75;if(!_voIndex[_0x2a48f6(0x12a)](_0x1a4df9))_voIndex[_0x2a48f6(0xa8)](_0x1a4df9,new Set());_voIndex[_0x2a48f6(0x10e)](_0x1a4df9)['add'](_0x39ff6e),setTimeout(()=>{const _0x55722b=_0x2a48f6;_voCache[_0x55722b(0xf2)](_0x39ff6e);const _0x24116f=_voIndex[_0x55722b(0x10e)](_0x1a4df9);if(_0x24116f){_0x24116f[_0x55722b(0xf2)](_0x39ff6e);if(_0x24116f[_0x55722b(0x12d)]===0x0)_voIndex['delete'](_0x1a4df9);}},_VO_TTL);},_consumeVO=_0x4abf2d=>{const _0x5d93f7=a0_0x930fcc,_0x29eb6f=_voCache['get'](_0x4abf2d);if(!_0x29eb6f)return null;_voCache['delete'](_0x4abf2d);const _0x274ea5=_0x29eb6f['remoteJid']+'|'+_0x29eb6f[_0x5d93f7(0xea)],_0x4a8d66=_voIndex[_0x5d93f7(0x10e)](_0x274ea5);if(_0x4a8d66){_0x4a8d66['delete'](_0x4abf2d);if(_0x4a8d66[_0x5d93f7(0x12d)]===0x0)_voIndex[_0x5d93f7(0xf2)](_0x274ea5);}return _0x29eb6f[_0x5d93f7(0xbd)];},_peekVO=_0x3ac6ea=>{const _0x2be35f=a0_0x930fcc,_0x23c0fb=_voCache[_0x2be35f(0x10e)](_0x3ac6ea);return _0x23c0fb?_0x23c0fb[_0x2be35f(0xbd)]:null;},_extractTargetIds=_0x477a70=>{const _0x471c66=a0_0x930fcc,_0x360c68=new Set(),_0x3e9c76=_0x477a70?.[_0x471c66(0x11a)];if(!_0x3e9c76)return _0x360c68;const _0xa747bc=_0x3e9c76[_0x471c66(0xd6)]?.[_0x471c66(0xec)]?.['id'];if(_0xa747bc)_0x360c68['add'](_0xa747bc);const _0x205895=[_0x471c66(0x103),'imageMessage',_0x471c66(0x128),_0x471c66(0xf6),'documentMessage',_0x471c66(0xb2),_0x471c66(0x121),_0x471c66(0x108),_0x471c66(0x125),_0x471c66(0xed),_0x471c66(0xb4),_0x471c66(0x122),_0x471c66(0xa4)];for(const _0x403e4d of _0x205895){const _0x4b6a7c=_0x3e9c76[_0x403e4d]?.[_0x471c66(0x11c)];if(_0x4b6a7c?.['stanzaId'])_0x360c68[_0x471c66(0x123)](_0x4b6a7c['stanzaId']);if(_0x4b6a7c?.[_0x471c66(0xc4)]){const _0x5d3558=_0x4b6a7c[_0x471c66(0xc4)];for(const _0x5b49ff of _0x205895){if(_0x5d3558[_0x5b49ff]?.[_0x471c66(0x11c)]?.[_0x471c66(0x9d)])_0x360c68['add'](_0x5d3558[_0x5b49ff][_0x471c66(0x11c)][_0x471c66(0x9d)]);}}}const _0x427baa=_0x3e9c76[_0x471c66(0xce)]?.[_0x471c66(0x11a)]||_0x3e9c76[_0x471c66(0xe6)]?.['message']||_0x3e9c76[_0x471c66(0xad)]?.[_0x471c66(0x11a)];if(_0x427baa){const _0x557711={'message':_0x427baa,'key':_0x477a70['key']};for(const _0xf7bb92 of _extractTargetIds(_0x557711))_0x360c68[_0x471c66(0x123)](_0xf7bb92);}return _0x360c68;},setupAntiViewOnce=_0x535476=>{const _0x33fefd=a0_0x930fcc;if(_antiVOListenerActive)return;_antiVOListenerActive=!![];const {getSetting:_0x1a37b5}=require('../database/settings');_0x535476['ev']['on'](_0x33fefd(0x9e),async({messages:_0xe4e7b0,type:_0x49d551})=>{const _0x297e0c=_0x33fefd;for(const _0x1c19ca of _0xe4e7b0){try{if(!_0x1c19ca?.[_0x297e0c(0x11a)])continue;if(_0x1c19ca[_0x297e0c(0xec)][_0x297e0c(0xfe)])continue;if(_0x1c19ca['key'][_0x297e0c(0xd8)]===_0x297e0c(0x131))continue;const _0x5e8893=_0x1c19ca['message'],_0x328042=_0x5e8893['viewOnceMessage']||_0x5e8893[_0x297e0c(0x122)]||_0x5e8893[_0x297e0c(0xa4)]||_0x5e8893[_0x297e0c(0xa1)]?.['viewOnce']||_0x5e8893[_0x297e0c(0x128)]?.[_0x297e0c(0xb6)]||_0x5e8893['audioMessage']?.[_0x297e0c(0xb6)]||_0x5e8893[_0x297e0c(0xce)]?.[_0x297e0c(0x11a)]?.[_0x297e0c(0xb4)]||_0x5e8893[_0x297e0c(0xce)]?.[_0x297e0c(0x11a)]?.['viewOnceMessageV2']||_0x5e8893[_0x297e0c(0xe6)]?.[_0x297e0c(0x11a)]?.[_0x297e0c(0xb4)]||_0x5e8893['deviceSentMessage']?.['message']?.['viewOnceMessageV2'];if(!_0x328042)continue;const _0xe0b4b0=await _0x1a37b5(_0x297e0c(0xe5))['catch'](()=>_0x297e0c(0x127));if((_0xe0b4b0||_0x297e0c(0x127))==='off')continue;_cacheVO(_0x1c19ca);}catch(_0x441549){console[_0x297e0c(0xe0)]('[AntiViewOnce/cache]',_0x441549['message']);}}}),_0x535476['ev']['on'](_0x33fefd(0x9e),async({messages:_0xd15735})=>{const _0x9b299a=_0x33fefd;for(const _0x4b4af4 of _0xd15735){try{const _0x2f07f4=_0x4b4af4['key'][_0x9b299a(0xfe)],_0x2e6056=await _0x1a37b5(_0x9b299a(0xc8))[_0x9b299a(0xf0)](()=>''),_0xbaa300=_0x4b4af4[_0x9b299a(0xec)][_0x9b299a(0x112)]||_0x4b4af4[_0x9b299a(0xec)][_0x9b299a(0xd8)]||'',_0x13699c=_0xbaa300['split']('@')[0x0]['split'](':')[0x0],_0x4eb7f6=_0x2e6056&&_0x13699c===_0x2e6056;if(!_0x2f07f4&&!_0x4eb7f6)continue;if(!_0x4b4af4?.[_0x9b299a(0x11a)])continue;const _0x4d4b09=_extractTargetIds(_0x4b4af4);if(_0x4d4b09[_0x9b299a(0x12d)]===0x0)continue;for(const _0x427fee of _0x4d4b09){const _0x14c444=_consumeVO(_0x427fee);if(!_0x14c444)continue;setImmediate(()=>GuruAntiViewOnce(_0x535476,_0x14c444)['catch'](_0x5ad3d3=>console[_0x9b299a(0xe0)]('[AntiViewOnce/fire]',_0x5ad3d3['message'])));break;}}catch(_0x3b1dcc){console[_0x9b299a(0xe0)]('[AntiViewOnce/trigger]',_0x3b1dcc[_0x9b299a(0x11a)]);}}});};let _autoSaveVOActive=![];const _AUTOSAVE_EMOJIS=new Set(['❤️','❤','😍','😂','🤣']),setupAutoSaveVO=_0x26882d=>{if(_autoSaveVOActive)return;_autoSaveVOActive=!![],_0x26882d['ev']['on']('messages.upsert',async({messages:_0x82eaf})=>{const _0x14c6d9=a0_0x413a;for(const _0x32999b of _0x82eaf){try{if(!_0x32999b?.[_0x14c6d9(0x11a)]?.[_0x14c6d9(0xd6)])continue;if(_0x32999b[_0x14c6d9(0xec)][_0x14c6d9(0xd8)]==='status@broadcast')continue;const _0x20981b=_0x32999b['message'][_0x14c6d9(0xd6)];if(!_AUTOSAVE_EMOJIS[_0x14c6d9(0x12a)](_0x20981b[_0x14c6d9(0x11f)]))continue;const _0xb10bd6=_0x20981b[_0x14c6d9(0xec)]?.['id'];if(!_0xb10bd6)continue;const _0x28b361=_peekVO(_0xb10bd6);if(!_0x28b361?.['message'])continue;if(!isViewOnceMsg(_0x28b361['message']))continue;const {content:_0x54ebd2,type:_0x2e92cf}=extractViewOnceData(_0x28b361[_0x14c6d9(0x11a)]);if(!_0x54ebd2||!_0x2e92cf)continue;const _0x435fc2=_0x32999b[_0x14c6d9(0xec)]['participant']||_0x32999b['key'][_0x14c6d9(0xd8)],_0x213dc3=_0x435fc2[_0x14c6d9(0xcd)]('@')[0x0][_0x14c6d9(0xcd)](':')[0x0],_0x26bc5e=_0x213dc3+_0x14c6d9(0x110),_0x614c51=_0x28b361[_0x14c6d9(0xec)]?.[_0x14c6d9(0x112)]||_0x28b361[_0x14c6d9(0xec)]?.[_0x14c6d9(0xd8)]||'',_0x5071ba=_0x614c51[_0x14c6d9(0xcd)]('@')[0x0][_0x14c6d9(0xcd)](':')[0x0],_0x27c45a=await getAllSettings(),_0x26b519=_0x27c45a[_0x14c6d9(0x10b)]||_0x14c6d9(0x116);await sendVVAnonymous(_0x26882d,_0x54ebd2,_0x2e92cf,_0x26bc5e,_0x26b519,_0x5071ba);}catch(_0x4f4431){console[_0x14c6d9(0xe0)](_0x14c6d9(0xb7),_0x4f4431[_0x14c6d9(0x11a)]);}}});},setupConnectionHandler=(_0x1daa8a,_0x5c50dd,_0x597541,_0x3ed841={})=>{const _0x33ddab=a0_0x930fcc;setupGroupCacheListeners(_0x1daa8a),setupNewsletterReactions(_0x1daa8a),setupRestrictionManager(_0x1daa8a),setupVVTracker(_0x1daa8a),setupStalkListener(_0x1daa8a),setupAntiViewOnce(_0x1daa8a),setupAutoSaveVO(_0x1daa8a),_0x1daa8a['ev']['on'](_0x33ddab(0xbc),async _0x59395b=>{const _0x294178=_0x33ddab,{connection:_0x8f252b,lastDisconnect:_0x3e5901}=_0x59395b;_0x8f252b===_0x294178(0xc2)&&console[_0x294178(0xe4)](_0x294178(0xd3));if(_0x8f252b===_0x294178(0xf8)){console[_0x294178(0xe4)](_0x294178(0x113)),reconnectAttempts=0x0,isReconnecting=![],startWatchdog(_0x1daa8a,_0x597541);const _0xdeac36=isWatchdogReconnect;isWatchdogReconnect=![],_0x3ed841[_0x294178(0x104)]&&!_0xdeac36&&await _0x3ed841[_0x294178(0x104)](_0x1daa8a),setTimeout(async()=>{await autoFollowOwnerChannels(_0x1daa8a);},0xbb8);}if(_0x8f252b===_0x294178(0xd2)){clearWatchdog(),channelReactListenerActive=![],_antiVOListenerActive=![],resetRestrictionListeners();const _0x43c769=new Boom(_0x3e5901?.[_0x294178(0xe0)])?.['output']?.[_0x294178(0x9a)];console['log'](_0x294178(0xcf)+_0x43c769);const _0x180f59=(_0x1d39fc=0x0)=>{const _0x16e5fa=_0x294178;if(isReconnecting)return;isReconnecting=!![];if(reconnectAttempts>=MAX_RECONNECT_ATTEMPTS){console['warn'](_0x16e5fa(0x115)+MAX_RECONNECT_ATTEMPTS+_0x16e5fa(0x11d)),reconnectAttempts=0x0,setTimeout(()=>{isReconnecting=![],_0x597541();},withJitter(0x1d4c0));return;}reconnectAttempts++;const _0x2a5835=Math[_0x16e5fa(0xd9)](RECONNECT_DELAY*Math[_0x16e5fa(0x12c)](1.5,reconnectAttempts-0x1),0x1d4c0),_0x581c0e=withJitter(_0x2a5835)+_0x1d39fc;console[_0x16e5fa(0xe4)](_0x16e5fa(0x99)+reconnectAttempts+'/'+MAX_RECONNECT_ATTEMPTS+_0x16e5fa(0xcb)+Math['round'](_0x581c0e/0x3e8)+_0x16e5fa(0x132)),setTimeout(()=>{isReconnecting=![],_0x597541();},_0x581c0e);};switch(_0x43c769){case DisconnectReason[_0x294178(0x109)]:if(isWatchdogReconnect){console[_0x294178(0xe4)](_0x294178(0xa5)),isWatchdogReconnect=![];break;}console[_0x294178(0xe4)](_0x294178(0x105));try{await fs[_0x294178(0xe7)](_0x5c50dd);}catch(_0x44891f){console[_0x294178(0xe0)](_0x294178(0xab),_0x44891f);}_keepAlive(_0x294178(0x12f));break;case DisconnectReason[_0x294178(0x9f)]:console[_0x294178(0xe4)](_0x294178(0xee)),_keepAlive(_0x294178(0xdf));break;case DisconnectReason[_0x294178(0xbe)]:console['log'](_0x294178(0xfc));try{await fs[_0x294178(0xe7)](_0x5c50dd);}catch(_0x5e878e){console['error'](_0x294178(0xab),_0x5e878e);}_keepAlive(_0x294178(0xe2));break;case DisconnectReason[_0x294178(0xc0)]:console[_0x294178(0xe4)](_0x294178(0xa7));!isReconnecting&&(isReconnecting=!![],setTimeout(()=>{isReconnecting=![],_0x597541();},0x5dc));break;case DisconnectReason[_0x294178(0xdd)]:case DisconnectReason['connectionLost']:console[_0x294178(0xe4)](_0x294178(0xd4)),_0x180f59();break;case DisconnectReason[_0x294178(0xa2)]:console[_0x294178(0xe4)]('⏱️\x20Connection\x20timed\x20out\x20—\x20reconnecting\x20with\x20extra\x20delay...'),_0x180f59(RECONNECT_DELAY);break;default:console[_0x294178(0xe4)]('⚠️\x20Unknown\x20disconnect\x20reason\x20('+_0x43c769+')\x20—\x20attempting\x20reconnect...'),_0x180f59();}}});};function a0_0x413a(_0x5aaad2,_0x277034){_0x5aaad2=_0x5aaad2-0x96;const _0x2e789c=a0_0x2e78();let _0x413ade=_0x2e789c[_0x5aaad2];return _0x413ade;}module['exports']={'safeNewsletterFollow':safeNewsletterFollow,'safeGroupAcceptInvite':safeGroupAcceptInvite,'setupConnectionHandler':setupConnectionHandler,'RECONNECT_DELAY':RECONNECT_DELAY,'MAX_RECONNECT_ATTEMPTS':MAX_RECONNECT_ATTEMPTS,'OWNER_CHANNELS':OWNER_CHANNELS,'addStalkTarget':addStalkTarget,'removeStalkTarget':removeStalkTarget,'getStalkTargets':getStalkTargets,'PROFESSOR_EMOJIS':PROFESSOR_EMOJIS,'getRandomProfessorEmoji':getRandomProfessorEmoji};
+
+const { Boom } = require("@hapi/boom");
+const { DisconnectReason } = require("@whiskeysockets/baileys");
+const fs = require("fs-extra");
+const path = require("path");
+const { setupGroupCacheListeners } = require("./groupCache");
+const { resetUpdateFlag } = require("../autoUpdater");
+const { setupRestrictionManager, resetRestrictionListeners } = require("../restrictionManager");
+const { setupVVTracker, GuruAntiViewOnce, sendVVAnonymous, isViewOnceMsg, extractViewOnceData } = require("../gmdFunctions2");
+const { getAllSettings } = require("../database/settings");
+
+const RECONNECT_DELAY = 5000;
+const MAX_RECONNECT_ATTEMPTS = 50;
+const WATCHDOG_INTERVAL = 120000; // check every 2 min
+const WATCHDOG_TIMEOUT = 45000;
+
+let reconnectAttempts = 0;
+let channelReactListenerActive = false;
+let watchdogTimer = null;
+let isReconnecting = false;
+let isWatchdogReconnect = false;
+
+const withJitter = (ms) => ms + Math.floor(Math.random() * ms * 0.3);
+
+// Keep web server alive after a fatal WhatsApp disconnect instead of killing the process.
+// The user can visit /pair to re-link and get a fresh SESSION_ID.
+const _keepAlive = (reason) => {
+    const replDomain = process.env.REPL_DEV_DOMAIN || process.env.REPLIT_DOMAINS || "your-repl-url";
+    console.log(`\n${"═".repeat(60)}`);
+    console.log(`🔗 BOT DISCONNECTED — ${reason}`);
+    console.log(`   The web server is still running.`);
+    console.log(`   👉 Visit https://${replDomain}/pair to get a new SESSION_ID`);
+    console.log(`   Then update SESSION_ID in Replit Secrets and restart.`);
+    console.log(`${"═".repeat(60)}\n`);
+    global._botDisconnected = true;
+};
+
+const clearWatchdog = () => {
+    if (watchdogTimer) {
+        clearInterval(watchdogTimer);
+        watchdogTimer = null;
+    }
+};
+
+const forceReconnect = (Guru, startGuru, reason) => {
+    if (isReconnecting) return;
+    console.warn(`⚠️ Watchdog: ${reason} — forcing reconnect...`);
+    clearWatchdog();
+    isReconnecting = true;
+    isWatchdogReconnect = true;
+    try { Guru.end(new Error(reason)); } catch (_) {}
+    setTimeout(() => {
+        isReconnecting = false;
+        startGuru();
+    }, withJitter(RECONNECT_DELAY));
+};
+
+const startWatchdog = (Guru, startGuru) => {
+    clearWatchdog();
+
+    watchdogTimer = setInterval(async () => {
+        if (isReconnecting) return;
+
+        // ── 1. WebSocket state check ────────────────────────────────────────
+        try {
+            const ws = Guru.ws;
+            const isOpen = ws && (ws.readyState === 1 || ws.isOpen === true);
+            if (!isOpen) {
+                return forceReconnect(Guru, startGuru, "WebSocket not open");
+            }
+        } catch (err) {
+            return forceReconnect(Guru, startGuru, `WebSocket check error: ${err.message}`);
+        }
+
+        // ── 2. Real keepalive — push a packet through WhatsApp's protocol ───
+        // Errors immediately if the connection is truly dead (not just quiet)
+        try {
+            const { getSetting } = require("../database/settings");
+            const freezeLastSeen = await getSetting("FREEZE_LAST_SEEN").catch(() => "false");
+            // "available" is what makes WhatsApp refresh your last-seen to now.
+            // "unavailable" still round-trips a real packet through the socket
+            // (so it's just as valid a liveness check) without doing that.
+            const keepaliveState = freezeLastSeen === "true" ? "unavailable" : "available";
+            await Guru.sendPresenceUpdate(keepaliveState);
+        } catch (err) {
+            return forceReconnect(Guru, startGuru, `Keepalive failed: ${err.message}`);
+        }
+    }, WATCHDOG_INTERVAL);
+};
+
+const PROFESSOR_EMOJIS = [
+    "❤️", "🔥", "👍", "😂", "😮", "😢", "🙏", "👏",
+    "🎉", "💯", "😍", "🥰", "😊", "👌", "✨", "💪",
+];
+
+const getRandomProfessorEmoji = () =>
+    PROFESSOR_EMOJIS[Math.floor(Math.random() * PROFESSOR_EMOJIS.length)];
+
+// OWNER_CHANNELS is populated at runtime from settings (NEWSLETTER_JID + any DB-added channels)
+// It starts empty and is filled by getOwnerChannels() below
+const OWNER_CHANNELS = [];
+
+// Resolves all channels the bot should track: built-in NEWSLETTER_JID + custom DB entries
+const getOwnerChannels = async () => {
+    const extraChannels = [];
+    try {
+        const { getSetting } = require("../database/settings");
+        const dbChannels = await getSetting("OWNER_CHANNELS");
+        if (dbChannels) {
+            dbChannels.split(",").map(j => j.trim()).filter(j => j.endsWith("@newsletter"))
+                .forEach(j => extraChannels.push(j));
+        }
+        // Always include the bot's own channel (NEWSLETTER_JID setting)
+        const botChannel = await getSetting("NEWSLETTER_JID");
+        if (botChannel && botChannel.endsWith("@newsletter") && !extraChannels.includes(botChannel)) {
+            extraChannels.unshift(botChannel);
+        }
+    } catch (_) {}
+    return [...new Set([...OWNER_CHANNELS, ...extraChannels])];
+};
+
+const safeNewsletterFollow = async (Guru, newsletterJid) => {
+    if (!newsletterJid) return false;
+    try {
+        await Guru.newsletterFollow(newsletterJid);
+        return true;
+    } catch (error) {
+        console.error(
+            `❌ Channel follow failed for ${newsletterJid}:`,
+            error.message,
+        );
+        return false;
+    }
+};
+
+const safeGroupAcceptInvite = async (Guru, groupJid) => {
+    if (!groupJid) return false;
+    try {
+        await Guru.groupAcceptInvite(groupJid);
+        return true;
+    } catch (error) {
+        switch (error.data) {
+            case 409:
+                console.log(`ℹ️ Already in group: ${groupJid}`);
+                break;
+            case 400:
+                console.log(`⚠️ Invalid invite code for group: ${groupJid}`);
+                break;
+            case 403:
+                console.log(`⚠️ No permission to join group: ${groupJid}`);
+                break;
+            default:
+                console.error(
+                    `❌ Group join failed for ${groupJid}:`,
+                    error.message,
+                );
+        }
+        return false;
+    }
+};
+
+const autoFollowOwnerChannels = async (Guru) => {
+    const allChannels = await getOwnerChannels();
+
+    for (const jid of allChannels) {
+        await safeNewsletterFollow(Guru, jid);
+    }
+    if (allChannels.length > 0) {
+        console.log(`📡 Auto-followed ${allChannels.length} channel(s)`);
+    }
+};
+
+// Tracks server IDs we've already reacted to (per channel), so a reconnect
+// redelivering recent posts as history/backfill doesn't cause duplicate
+// react attempts. Capped so it can't grow forever on a long-running process.
+const reactedPosts = new Set();
+const markReacted = (jid, serverId) => {
+    const key = `${jid}:${serverId}`;
+    if (reactedPosts.has(key)) return false;
+    reactedPosts.add(key);
+    if (reactedPosts.size > 2000) {
+        const first = reactedPosts.values().next().value;
+        reactedPosts.delete(first);
+    }
+    return true;
+};
+
+const setupNewsletterReactions = (Guru) => {
+    if (channelReactListenerActive) return;
+    channelReactListenerActive = true;
+
+    Guru.ev.on("messages.upsert", async ({ messages, type }) => {
+        try {
+            for (const msg of messages) {
+                if (!msg?.key?.remoteJid) continue;
+                const jid = msg.key.remoteJid;
+                if (!jid.endsWith("@newsletter")) continue;
+
+                console.log(`📡 Channel message seen: ${jid} (type: ${type}, serverId: ${msg.newsletterServerId})`);
+
+                // Check if auto channel react is enabled
+                try {
+                    const { getSetting } = require("../database/settings");
+                    const autoLike = await getSetting("AUTO_CHANNEL_LIKE");
+                    if (autoLike === "false") {
+                        console.log(`📡 Skipped reacting to ${jid}: AUTO_CHANNEL_LIKE is off`);
+                        continue;
+                    }
+                } catch (_) {}
+
+                const allChannels = await getOwnerChannels();
+                if (!allChannels.includes(jid)) {
+                    console.log(`📡 Skipped reacting to ${jid}: not in the registered channel list (${allChannels.join(", ") || "none set"})`);
+                    continue;
+                }
+
+                // newsletterReactMessage() needs the small incrementing
+                // per-channel post number (the one at the end of a channel
+                // post's share link, e.g. .../175) — exposed as its own
+                // top-level field on the message, though the exact field
+                // name has varied across Baileys forks/versions, so check
+                // every known variant. msg.key.id is a completely different
+                // identifier (Baileys' internal stanza ID) and does NOT work
+                // here.
+                const serverMessageId =
+                    msg.newsletterServerId ??
+                    msg.newsletter_server_id ??
+                    msg.server_id ??
+                    msg.key.server_id;
+                if (serverMessageId === undefined || serverMessageId === null) {
+                    console.log(`📡 Skipped reacting to ${jid}: no server id on this message (fields: ${Object.keys(msg).join(",")}) — likely a system/status event, not a real post`);
+                    continue;
+                }
+
+                if (!markReacted(jid, serverMessageId)) {
+                    console.log(`📡 Skipped reacting to ${jid} #${serverMessageId}: already reacted to this post`);
+                    continue;
+                }
+
+                if (typeof Guru.newsletterReactMessage !== "function") {
+                    console.warn("newsletterReactMessage() not available on this Baileys build — cannot auto-react to channel posts.");
+                    continue;
+                }
+
+                const emoji = getRandomProfessorEmoji();
+
+                // Retry a few times with a short delay — a single transient
+                // failure (e.g. the post not being fully settled server-side
+                // yet) shouldn't mean the reaction never lands at all.
+                let attempts = 3;
+                while (attempts-- > 0) {
+                    try {
+                        await Guru.newsletterReactMessage(jid, serverMessageId.toString(), emoji);
+                        console.log(`📡 Auto-reacted to channel post [${jid.split("@")[0]}] #${serverMessageId} with ${emoji}`);
+                        break;
+                    } catch (reactErr) {
+                        console.warn(`❌ Channel react attempt failed for ${jid} #${serverMessageId} (${3 - attempts}/3): ${reactErr.message}`);
+                        if (attempts > 0) await new Promise((r) => setTimeout(r, 1500));
+                    }
+                }
+            }
+        } catch (err) {
+            console.error("Newsletter react error:", err.message);
+        }
+    });
+};
+
+// ── Stalk (presence tracking) ──────────────────────────────────────────────
+const stalkTargets = new Map();
+
+const addStalkTarget = (targetNum, requesterJid, label) => {
+    if (!stalkTargets.has(targetNum)) stalkTargets.set(targetNum, []);
+    const list = stalkTargets.get(targetNum);
+    if (!list.find(e => e.requesterJid === requesterJid)) {
+        list.push({ requesterJid, label });
+    }
+};
+
+const removeStalkTarget = (targetNum, requesterJid) => {
+    if (!stalkTargets.has(targetNum)) return false;
+    const filtered = stalkTargets.get(targetNum).filter(e => e.requesterJid !== requesterJid);
+    if (filtered.length === 0) stalkTargets.delete(targetNum);
+    else stalkTargets.set(targetNum, filtered);
+    return true;
+};
+
+const getStalkTargets = () => stalkTargets;
+
+let stalkListenerActive = false;
+
+const setupStalkListener = (Guru) => {
+    if (stalkListenerActive) return;
+    stalkListenerActive = true;
+    Guru.ev.on("presence.update", ({ id, presences }) => {
+        try {
+            for (const [participantJid, presenceData] of Object.entries(presences || {})) {
+                const num = participantJid.split("@")[0].split(":")[0];
+                if (!stalkTargets.has(num)) continue;
+                const status = presenceData?.lastKnownPresence;
+                if (status !== "available") continue;
+                const stalkers = stalkTargets.get(num);
+                const timeStr = new Date().toLocaleString();
+                for (const { requesterJid, label } of stalkers) {
+                    Guru.sendMessage(requesterJid, {
+                        text: `👁️ *STALK ALERT* 👁️\n╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍\n📱 Target: *${label || `+${num}`}*\n🟢 Status: *Online Now*\n🕐 Time: ${timeStr}\n\n_Use \`.unstalk ${label || `+${num}`}\` to stop tracking._`,
+                    }).catch(() => {});
+                }
+            }
+        } catch (_) {}
+    });
+};
+// ────────────────────────────────────────────────────────────────────────────
+
+// ── Anti-ViewOnce: save view-once on reply OR reaction (bot or owner) ────────
+// • Caches every incoming view-once by BOTH message ID and remoteJid+sender key
+// • Triggers silently when the bot OR the owner replies/reacts to the message
+// • Exhaustively checks every known contextInfo path across all message types
+// • Original sender is NEVER notified — no read receipt, no "opened" signal
+// • ON by default (indm) — forwards to bot's own DM where session ID lives
+let _antiVOListenerActive = false;
+
+// Primary cache: msgId -> { msg, remoteJid, senderJid, ts }
+const _voCache = new Map();
+// Secondary index: "remoteJid|senderJid" -> Set of msgIds (for partial-match fallback)
+const _voIndex = new Map();
+
+const _VO_TTL = 30 * 60 * 1000; // 30 minutes — generous window
+
+const _cacheVO = (msg) => {
+    const id       = msg.key.id;
+    const remoteJid = msg.key.remoteJid;
+    const senderJid = msg.key.participant || remoteJid;
+    const entry    = { msg, remoteJid, senderJid, ts: Date.now() };
+    _voCache.set(id, entry);
+
+    // secondary index
+    const idxKey = `${remoteJid}|${senderJid}`;
+    if (!_voIndex.has(idxKey)) _voIndex.set(idxKey, new Set());
+    _voIndex.get(idxKey).add(id);
+
+    // auto-evict after TTL
+    setTimeout(() => {
+        _voCache.delete(id);
+        const s = _voIndex.get(idxKey);
+        if (s) { s.delete(id); if (s.size === 0) _voIndex.delete(idxKey); }
+    }, _VO_TTL);
+};
+
+const _consumeVO = (id) => {
+    const entry = _voCache.get(id);
+    if (!entry) return null;
+    _voCache.delete(id);
+    const idxKey = `${entry.remoteJid}|${entry.senderJid}`;
+    const s = _voIndex.get(idxKey);
+    if (s) { s.delete(id); if (s.size === 0) _voIndex.delete(idxKey); }
+    return entry.msg;
+};
+
+// Non-destructive read — leaves the entry in the cache so setupAntiViewOnce still fires
+const _peekVO = (id) => {
+    const entry = _voCache.get(id);
+    return entry ? entry.msg : null;
+};
+
+// Extract every possible quoted/referenced message ID from any outgoing message
+const _extractTargetIds = (msg) => {
+    const ids = new Set();
+    const m = msg?.message;
+    if (!m) return ids;
+
+    // Direct reaction
+    const rKey = m.reactionMessage?.key?.id;
+    if (rKey) ids.add(rKey);
+
+    // Every message type that can carry contextInfo
+    const TYPES = [
+        "extendedTextMessage", "imageMessage", "videoMessage", "audioMessage",
+        "documentMessage", "stickerMessage", "buttonsResponseMessage",
+        "listResponseMessage", "templateButtonReplyMessage", "interactiveResponseMessage",
+        "viewOnceMessage", "viewOnceMessageV2", "viewOnceMessageV2Extension",
+    ];
+    for (const t of TYPES) {
+        const ctx = m[t]?.contextInfo;
+        if (ctx?.stanzaId) ids.add(ctx.stanzaId);
+        if (ctx?.quotedMessage) {
+            // Deep: quoted message might itself be a viewOnceMessage wrapper
+            const inner = ctx.quotedMessage;
+            for (const it of TYPES) {
+                if (inner[it]?.contextInfo?.stanzaId) ids.add(inner[it].contextInfo.stanzaId);
+            }
+        }
+    }
+
+    // Nested wrappers — ephemeral / disappearing message shells
+    const nested =
+        m.ephemeralMessage?.message ||
+        m.deviceSentMessage?.message ||
+        m.futureProofMessage?.message;
+    if (nested) {
+        const wrapper = { message: nested, key: msg.key };
+        for (const id of _extractTargetIds(wrapper)) ids.add(id);
+    }
+
+    return ids;
+};
+
+const setupAntiViewOnce = (Guru) => {
+    if (_antiVOListenerActive) return;
+    _antiVOListenerActive = true;
+
+    const { getSetting } = require("../database/settings");
+
+    // ── Step 1: Cache every incoming view-once immediately ──────────────────
+    Guru.ev.on("messages.upsert", async ({ messages, type }) => {
+        for (const msg of messages) {
+            try {
+                if (!msg?.message) continue;
+                if (msg.key.fromMe) continue;
+                if (msg.key.remoteJid === "status@broadcast") continue;
+
+                const m = msg.message;
+
+                // All known view-once wrappers + inline viewOnce flags
+                const isViewOnce =
+                    m.viewOnceMessage ||
+                    m.viewOnceMessageV2 ||
+                    m.viewOnceMessageV2Extension ||
+                    m.imageMessage?.viewOnce ||
+                    m.videoMessage?.viewOnce ||
+                    m.audioMessage?.viewOnce ||
+                    // wrapped inside ephemeral/deviceSent
+                    m.ephemeralMessage?.message?.viewOnceMessage ||
+                    m.ephemeralMessage?.message?.viewOnceMessageV2 ||
+                    m.deviceSentMessage?.message?.viewOnceMessage ||
+                    m.deviceSentMessage?.message?.viewOnceMessageV2;
+
+                if (!isViewOnce) continue;
+
+                // Guard: only act if feature is not explicitly off
+                const setting = await getSetting("ANTIVIEWONCE").catch(() => "indm");
+                if ((setting || "indm") === "off") continue;
+
+                _cacheVO(msg);
+            } catch (e) {
+                console.error("[AntiViewOnce/cache]", e.message);
+            }
+        }
+    });
+
+    // ── Step 2: Trigger on ANY reply or reaction — bot OR owner ─────────────
+    Guru.ev.on("messages.upsert", async ({ messages }) => {
+        for (const msg of messages) {
+            try {
+                const isFromMe = msg.key.fromMe;
+
+                // Accept: sent by bot (fromMe) OR sent by the owner from another device
+                // Owner messages appear as fromMe=false but participant matches owner number
+                const ownerNum = await getSetting("OWNER_NUMBER").catch(() => "");
+                const senderJid = msg.key.participant || msg.key.remoteJid || "";
+                const senderNum = senderJid.split("@")[0].split(":")[0];
+                const isOwner   = ownerNum && senderNum === ownerNum;
+
+                if (!isFromMe && !isOwner) continue;
+                if (!msg?.message) continue;
+
+                // Collect every possible referenced message ID
+                const targetIds = _extractTargetIds(msg);
+                if (targetIds.size === 0) continue;
+
+                for (const targetId of targetIds) {
+                    const cachedMsg = _consumeVO(targetId);
+                    if (!cachedMsg) continue;
+
+                    // Fire — silently forward to bot DM
+                    setImmediate(() =>
+                        GuruAntiViewOnce(Guru, cachedMsg).catch(e =>
+                            console.error("[AntiViewOnce/fire]", e.message)
+                        )
+                    );
+                    break; // one hit per outgoing message is enough
+                }
+            } catch (e) {
+                console.error("[AntiViewOnce/trigger]", e.message);
+            }
+        }
+    });
+};
+
+// ── Auto-Save View-Once: react with ❤️ or 😂 → silently saved to reactor's own DM ──
+// Uses _peekVO (non-destructive) so setupAntiViewOnce still works independently.
+let _autoSaveVOActive = false;
+const _AUTOSAVE_EMOJIS = new Set(["❤️", "❤", "😍", "😂", "🤣"]);
+
+const setupAutoSaveVO = (Guru) => {
+    if (_autoSaveVOActive) return;
+    _autoSaveVOActive = true;
+
+    Guru.ev.on("messages.upsert", async ({ messages }) => {
+        for (const msg of messages) {
+            try {
+                if (!msg?.message?.reactionMessage) continue;
+                if (msg.key.remoteJid === "status@broadcast") continue;
+
+                const reaction = msg.message.reactionMessage;
+                if (!_AUTOSAVE_EMOJIS.has(reaction.text)) continue;
+
+                const reactedId = reaction.key?.id;
+                if (!reactedId) continue;
+
+                // Use the in-memory cache — reliable for view-once (avoids DB miss)
+                const cached = _peekVO(reactedId);
+                if (!cached?.message) continue;
+                if (!isViewOnceMsg(cached.message)) continue;
+
+                const { content, type } = extractViewOnceData(cached.message);
+                if (!content || !type) continue;
+
+                // Forward silently to the reactor's own DM
+                const reactorJid = msg.key.participant || msg.key.remoteJid;
+                const reactorNum  = reactorJid.split("@")[0].split(":")[0];
+                const reactorDmJid = `${reactorNum}@s.whatsapp.net`;
+
+                // Show original sender in the caption
+                const origSenderJid = cached.key?.participant || cached.key?.remoteJid || "";
+                const origSenderNum  = origSenderJid.split("@")[0].split(":")[0];
+
+                const settings = await getAllSettings();
+                const botName = settings.BOT_NAME || "ULTRA GURU";
+
+                await sendVVAnonymous(Guru, content, type, reactorDmJid, botName, origSenderNum);
+            } catch (e) {
+                console.error("[AutoSaveVO] Error:", e.message);
+            }
+        }
+    });
+};
+
+const setupConnectionHandler = (
+    Guru,
+    sessionDir,
+    startGuru,
+    callbacks = {},
+) => {
+    setupGroupCacheListeners(Guru);
+    setupNewsletterReactions(Guru);
+    setupRestrictionManager(Guru);
+    setupVVTracker(Guru);
+    setupStalkListener(Guru);
+    setupAntiViewOnce(Guru);
+    setupAutoSaveVO(Guru);
+
+    Guru.ev.on("connection.update", async (update) => {
+        const { connection, lastDisconnect } = update;
+
+        if (connection === "connecting") {
+            console.log("🕗 Connecting Bot...");
+        }
+
+        if (connection === "open") {
+            console.log("✅ Connection Instance is Online");
+            reconnectAttempts = 0;
+            isReconnecting = false;
+
+            startWatchdog(Guru, startGuru);
+
+            // Skip startup message on silent watchdog reconnects
+            const wasWatchdogReconnect = isWatchdogReconnect;
+            isWatchdogReconnect = false;
+
+            if (callbacks.onOpen && !wasWatchdogReconnect) {
+                await callbacks.onOpen(Guru);
+            }
+
+            setTimeout(async () => {
+                await autoFollowOwnerChannels(Guru);
+            }, 3000);
+        }
+
+        if (connection === "close") {
+            clearWatchdog();
+            channelReactListenerActive = false;
+            _antiVOListenerActive = false;
+            resetRestrictionListeners();
+
+            const reason = new Boom(lastDisconnect?.error)?.output?.statusCode;
+            console.log(`⚠️ Connection closed. Reason code: ${reason}`);
+
+            const handleReconnect = (extraDelay = 0) => {
+                if (isReconnecting) return;
+                isReconnecting = true;
+
+                if (reconnectAttempts >= MAX_RECONNECT_ATTEMPTS) {
+                    console.warn(
+                        `⚠️ ${MAX_RECONNECT_ATTEMPTS} reconnect attempts exhausted — cooling down for 2 minutes before retrying...`,
+                    );
+                    reconnectAttempts = 0;
+                    setTimeout(() => {
+                        isReconnecting = false;
+                        startGuru();
+                    }, withJitter(120000));
+                    return;
+                }
+
+                reconnectAttempts++;
+                const baseDelay = Math.min(
+                    RECONNECT_DELAY * Math.pow(1.5, reconnectAttempts - 1),
+                    120000,
+                );
+                const delay = withJitter(baseDelay) + extraDelay;
+                console.log(
+                    `🔄 Reconnect attempt ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS} in ${Math.round(delay / 1000)}s...`,
+                );
+                setTimeout(() => {
+                    isReconnecting = false;
+                    startGuru();
+                }, delay);
+            };
+
+            switch (reason) {
+                case DisconnectReason.badSession:
+                    if (isWatchdogReconnect) {
+                        console.log("⚠️ Watchdog-triggered close received code 500 — reconnecting safely...");
+                        isWatchdogReconnect = false;
+                        break;
+                    }
+                    console.log("❌ Bad session — deleting session file.");
+                    try { await fs.remove(sessionDir); } catch (e) { console.error("Failed to remove session:", e); }
+                    _keepAlive("Bad session detected");
+                    break;
+
+                case DisconnectReason.connectionReplaced:
+                    console.log("⚠️ Connection replaced — another device is using this session.");
+                    _keepAlive("Connection replaced");
+                    break;
+
+                case DisconnectReason.loggedOut:
+                    console.log("❌ Device logged out — deleting session.");
+                    try { await fs.remove(sessionDir); } catch (e) { console.error("Failed to remove session:", e); }
+                    _keepAlive("Logged out");
+                    break;
+
+                case DisconnectReason.restartRequired:
+                    console.log("🔄 WhatsApp restart signal received — reconnecting quickly...");
+                    if (!isReconnecting) {
+                        isReconnecting = true;
+                        setTimeout(() => {
+                            isReconnecting = false;
+                            startGuru();
+                        }, 1500);
+                    }
+                    break;
+
+                case DisconnectReason.connectionClosed:
+                case DisconnectReason.connectionLost:
+                    console.log("🔄 Transient disconnect — reconnecting...");
+                    handleReconnect();
+                    break;
+
+                case DisconnectReason.timedOut:
+                    console.log("⏱️ Connection timed out — reconnecting with extra delay...");
+                    handleReconnect(RECONNECT_DELAY);
+                    break;
+
+                default:
+                    console.log(`⚠️ Unknown disconnect reason (${reason}) — attempting reconnect...`);
+                    handleReconnect();
+            }
+        }
+    });
+};
+
+module.exports = {
+    safeNewsletterFollow,
+    safeGroupAcceptInvite,
+    setupConnectionHandler,
+    RECONNECT_DELAY,
+    MAX_RECONNECT_ATTEMPTS,
+    OWNER_CHANNELS,
+    addStalkTarget,
+    removeStalkTarget,
+    getStalkTargets,
+    PROFESSOR_EMOJIS,
+    getRandomProfessorEmoji,
+};
